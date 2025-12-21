@@ -1,0 +1,84 @@
+package com.audtream.desktop;
+
+import com.audtream.desktop.controller.LoginController;
+import com.audtream.desktop.util.Logger;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
+
+import java.io.IOException;
+import java.util.Objects;
+
+public final class Audtream extends Application {
+    private static Stage primaryStage;
+
+    private static Image appIcon;
+    private static int appXPos = 0;
+    private static int appYPos = 0;
+    @Override
+    public void start(Stage stage) throws Exception {
+        appIcon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("assets/icons/logo.png")));
+
+        primaryStage = stage;
+        primaryStage.getIcons().add(appIcon);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+
+        showLoginScene();
+    }
+
+    public static void main(String [] args) {
+        launch();
+    }
+
+    private void showLoginScene() {
+        int width = 900;
+        int height = 600;
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/views/login.fxml"));
+            Parent root = fxmlLoader.load();
+            LoginController controller = fxmlLoader.getController();
+
+            Scene loginScene = new Scene(root, width, height);
+            primaryStage.setScene(loginScene);
+            primaryStage.setTitle("Login | AudTream");
+            primaryStage.setMinWidth(width);
+            primaryStage.setMinHeight(height);
+            primaryStage.show();
+        } catch (IOException exception) {
+            Logger.printErr(exception.getMessage());
+        }
+    }
+
+    private static void applyAppMovement(Node target) {
+        target.setOnMousePressed((MouseEvent event) -> {
+            appXPos = (int) (event.getScreenX() - primaryStage.getX());
+            appYPos = (int) (event.getScreenY() - primaryStage.getY());
+        });
+
+        target.setOnMouseDragged((MouseEvent event) -> {
+            primaryStage.setX(event.getScreenX() - appXPos);
+            primaryStage.setY(event.getScreenY() - appYPos);
+        });
+    }
+
+    private static void close() {
+        Timeline timeline = new Timeline();
+        KeyFrame keyFrame = new KeyFrame(
+                Duration.millis(300),
+                new KeyValue(primaryStage.getScene().getRoot().opacityProperty(), 0)
+        );
+        timeline.getKeyFrames().add(keyFrame);
+        timeline.setOnFinished(actionEvent -> System.exit(0));
+        timeline.play();
+    }
+}
