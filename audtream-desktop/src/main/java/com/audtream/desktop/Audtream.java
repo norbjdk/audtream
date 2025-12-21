@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
@@ -50,17 +51,19 @@ public final class Audtream extends Application {
             controller.setAudtream(this);
 
             Scene loginScene = new Scene(root, width, height);
+            loginScene.setFill(Color.TRANSPARENT);
             primaryStage.setScene(loginScene);
             primaryStage.setTitle("Login | AudTream");
             primaryStage.setMinWidth(width);
             primaryStage.setMinHeight(height);
             primaryStage.show();
         } catch (IOException exception) {
-            Logger.printErr(exception.getMessage());
+            Logger.printErr("Error while loading login.fxml");
+            throw new RuntimeException(exception);
         }
     }
 
-    private static void applyAppMovement(Node target) {
+    public static void applyAppMovement(Node target) {
         target.setOnMousePressed((MouseEvent event) -> {
             appXPos = (int) (event.getScreenX() - primaryStage.getX());
             appYPos = (int) (event.getScreenY() - primaryStage.getY());
@@ -72,7 +75,11 @@ public final class Audtream extends Application {
         });
     }
 
-    private static void close() {
+    public static void minimize() {
+        primaryStage.setIconified(true);
+    }
+
+    public static void close() {
         Timeline timeline = new Timeline();
         KeyFrame keyFrame = new KeyFrame(
                 Duration.millis(300),

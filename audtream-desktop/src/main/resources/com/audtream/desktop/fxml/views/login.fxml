@@ -99,7 +99,7 @@
       </StackPane>
    </right>
    <top>
-      <GridPane prefHeight="30.0" BorderPane.alignment="CENTER">
+      <GridPane fx:id="topBar" prefHeight="30.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -116,13 +116,13 @@
             </FlowPane>
             <FlowPane alignment="TOP_RIGHT" hgap="1.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
-                  <Button mnemonicParsing="false" text="—">
+                  <Button mnemonicParsing="false" onAction="#minimize" text="—">
                      <styleClass>
                         <String fx:value="app-btn" />
                         <String fx:value="app-minimize-btn" />
                      </styleClass>
                   </Button>
-                  <Button mnemonicParsing="false" text="✕">
+                  <Button mnemonicParsing="false" onAction="#close" text="✕">
                      <styleClass>
                         <String fx:value="app-btn" />
                         <String fx:value="app-close-btn" />
