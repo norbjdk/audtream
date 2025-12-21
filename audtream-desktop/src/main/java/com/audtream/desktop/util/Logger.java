@@ -1,4 +1,4 @@
-package com.norbdev.audtream.util;
+package com.audtream.desktop.util;
 
 public class Logger {
 
