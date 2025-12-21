@@ -32,7 +32,7 @@ public final class Audtream extends Application {
 
         primaryStage = stage;
         primaryStage.getIcons().add(appIcon);
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.TRANSPARENT);
 
         showLoginScene();
     }
