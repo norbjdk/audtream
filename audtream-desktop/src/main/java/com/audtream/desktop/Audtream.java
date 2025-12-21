@@ -47,6 +47,7 @@ public final class Audtream extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/views/login.fxml"));
             Parent root = fxmlLoader.load();
             LoginController controller = fxmlLoader.getController();
+            controller.setAudtream(this);
 
             Scene loginScene = new Scene(root, width, height);
             primaryStage.setScene(loginScene);
