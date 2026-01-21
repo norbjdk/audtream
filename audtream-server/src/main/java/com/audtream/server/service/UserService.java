@@ -2,7 +2,7 @@ package com.audtream.server.service;
 
 import com.audtream.server.model.dto.RegisterRequest;
 import com.audtream.server.model.dto.UserResponse;
-import com.audtream.server.model.entity.User;
+import com.audtream.server.model.entity.UserEntity;
 import com.audtream.server.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,17 +22,17 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+        UserEntity userEntity = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
         return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
+                userEntity.getUsername(),
+                userEntity.getPassword(),
                 new ArrayList<>()
         );
     }
 
-    public User registerUser(RegisterRequest registerRequest) {
+    public UserEntity registerUser(RegisterRequest registerRequest) {
         if (userRepository.existsByUsername(registerRequest.getUsername())) {
             throw new RuntimeException("Username already exists");
         }
@@ -41,24 +41,24 @@ public class UserService implements UserDetailsService {
             throw new RuntimeException("Email already exists");
         }
 
-        User user = new User();
-        user.setUsername(registerRequest.getUsername());
-        user.setEmail(registerRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setRole(registerRequest.getRole());
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(registerRequest.getUsername());
+        userEntity.setEmail(registerRequest.getEmail());
+        userEntity.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        userEntity.setRole(registerRequest.getRole());
 
-        return userRepository.save(user);
+        return userRepository.save(userEntity);
     }
 
     public UserResponse getUserByUsername(String username) {
-        User user = userRepository.findByUsername(username)
+        UserEntity userEntity = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         UserResponse response = new UserResponse();
-        response.setId(user.getId());
-        response.setUsername(user.getUsername());
-        response.setEmail(user.getEmail());
-        response.setRole(user.getRole());
+        response.setId(userEntity.getId());
+        response.setUsername(userEntity.getUsername());
+        response.setEmail(userEntity.getEmail());
+        response.setRole(userEntity.getRole());
 
         return response;
     }

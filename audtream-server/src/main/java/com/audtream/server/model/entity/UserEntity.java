@@ -1,14 +1,11 @@
 package com.audtream.server.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -43,9 +40,9 @@ public class User {
     private LocalDate birthDate;
 
     // Constructors
-    public User() {}
+    public UserEntity() {}
 
-    public User(String email, String username, String password, Role role) {
+    public UserEntity(String email, String username, String password, Role role) {
         this.email = email;
         this.username = username;
         this.password = password;

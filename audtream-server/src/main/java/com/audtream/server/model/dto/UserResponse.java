@@ -1,12 +1,12 @@
 package com.audtream.server.model.dto;
 
-import com.audtream.server.model.entity.User;
+import com.audtream.server.model.entity.UserEntity;
 
 public class UserResponse {
     private Long id;
     private String username;
     private String email;
-    private User.Role role;
+    private UserEntity.Role role;
 
     public Long getId() {
         return id;
@@ -32,11 +32,11 @@ public class UserResponse {
         this.email = email;
     }
 
-    public User.Role getRole() {
+    public UserEntity.Role getRole() {
         return role;
     }
 
-    public void setRole(User.Role role) {
+    public void setRole(UserEntity.Role role) {
         this.role = role;
     }
 }
