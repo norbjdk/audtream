@@ -1,4 +1,4 @@
-package com.audtream.desktop.model;
+package com.audtream.desktop.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
@@ -10,6 +10,7 @@ public class User {
     private String role;
     private LocalDateTime createdAt;
 
+    // Getters and setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
