@@ -1,0 +1,42 @@
+{
+    "songs" : [
+        {
+            "title" : "Voilà",
+            "author" : "Barbara Pravi",
+            "link" : "/",
+            "cover" : "https://m.media-amazon.com/images/I/41Aeur9dmoL._UXNaN_FMjpg_QL85_.jpg"
+        },
+        {
+            "title" : "Before You Go",
+            "author" : "Lewis Capaldi",
+            "link" : "/",
+            "cover" : "https://m.media-amazon.com/images/I/41dS1rlkwbL._UXNaN_FMjpg_QL85_.jpg"
+        },
+        {
+            "title" : "Wings",
+            "author" : "Birdy",
+            "link" : "/",
+            "cover" : "https://m.media-amazon.com/images/I/61C9ehQXngL._UF894,1000_QL80_.jpg"
+        }
+    ],
+    "albums" : [
+        {
+            "title" : "In a Time Lapse",
+            "author" : "Ludovico Einaudi",
+            "link" : "/",
+            "cover" : "https://m.media-amazon.com/images/I/A1a4SFxr-CL._AC_UF894,1000_QL80_.jpg"
+        },
+        {
+            "title" : "Abbey Road",
+            "author" : "The Beatles",
+            "link" : "/",
+            "cover" : "https://m.media-amazon.com/images/I/81sBKBIcwvL._UF894,1000_QL80_.jpg"
+        },
+        {
+            "title" : "Rush!",
+            "author" : "Måneskin",
+            "link" : "/",
+            "cover" : "https://m.media-amazon.com/images/I/91GKB8lfr4L._UF894,1000_QL80_.jpg"
+        }
+    ]
+}

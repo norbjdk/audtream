@@ -1,0 +1,67 @@
+{
+    "id" : 2322738947,
+    "title" : "Snowman",
+    "author" : "Sia",
+    "cover" : "https://cdn.music.smcloud.net/t/covers/Snowman_so-6awt-NUY3-2Bhc_cover.jpg",
+    "author_data" : {
+        "id" : 1234,
+        "name" : "Sia",
+        "profile_pic" : "https://beta.cgm.pl/wp-content/uploads/2016/09/sia-670x390.jpg",
+        "profile_banner" : "https://yt3.googleusercontent.com/AcnOyYChS2RMrlglwyq8kdXrUTNzLhum9BS6yAwy9wRjgT3QrRIiQYUggeP4u1QNqQ87NGkwvg=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj"
+    },
+    "length" : 166,
+    "album_name" : "Everyday Is Christmas",
+    "album_content" : [
+        {
+            "id" : 124343823,
+            "title" : "Santa's Coming for Us",
+            "length" : 206,
+            "listened" : 123934
+        }, 
+        {
+            "id" : 4243323823,
+            "title" : "Everyday Is Christmas",
+            "length" : 206,
+            "listened" : 98236
+        },
+        {
+            "id" : 124343823,
+            "title" : "Santa's Coming for Us",
+            "length" : 206,
+            "listened" : 123934
+        }, 
+        {
+            "id" : 4243323823,
+            "title" : "Everyday Is Christmas",
+            "length" : 206,
+            "listened" : 98236
+        },
+        {
+            "id" : 124343823,
+            "title" : "Santa's Coming for Us",
+            "length" : 206,
+            "listened" : 123934
+        }, 
+        {
+            "id" : 4243323823,
+            "title" : "Everyday Is Christmas",
+            "length" : 206,
+            "listened" : 98236
+        },
+        {
+            "id" : 124343823,
+            "title" : "Santa's Coming for Us",
+            "length" : 206,
+            "listened" : 123934
+        }, 
+        {
+            "id" : 4243323823,
+            "title" : "Everyday Is Christmas",
+            "length" : 206,
+            "listened" : 98236
+        }
+    ],
+    "release_year" : 2017,
+    "listened" : 812398,
+    "likes" : 180023
+}

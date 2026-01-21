@@ -1,0 +1,40 @@
+{
+    "songs" : [
+        {   "id" : 2322738947,
+            "title" : "Snowman",
+            "author" : "Sia",
+            "link" : "/",
+            "cover" : "https://cdn.music.smcloud.net/t/covers/Snowman_so-6awt-NUY3-2Bhc_cover.jpg"
+        },
+        {
+            "title" : "Last Christmas",
+            "author" : "WHAM!",
+            "link" : "/",
+            "cover" : "https://cdn.music.smcloud.net/t/covers/Last-Christmas_so-DkVe-AWbo-gcJy_cover.jpg"
+        },
+        {
+            "title" : "All I Want for Christmas Is You",
+            "author" : "Mariah Carey",
+            "link" : "/",
+            "cover" : "https://cdn.music.smcloud.net/t/covers/All-I-Want-for-Christmas-Is-You_so-NEkD-SMwM-7Aa2_cover.jpg"
+        },
+        {
+            "title" : "Merry Christmas Everyone",
+            "author" : "Shakin Stevens",
+            "link" : "/",
+            "cover" : "https://cdn.music.smcloud.net/t/covers/Merry-Christmas-Everyone_so-NgJd-F8Wq-XAZc_cover.jpg"
+        },
+        {
+            "title" : "Santa Tell Me",
+            "author" : "Ariana Grande",
+            "link" : "/",
+            "cover" : "https://cdn.music.smcloud.net/t/covers/Santa-Tell-Me_so-6Vgm-X4bD-5S3G_cover.jpg"
+        },
+        {
+            "title" : "It's the Most Wonderful Time of the Year",
+            "author" : "Andy Williams",
+            "link" : "/",
+            "cover" : "https://i.scdn.co/image/ab67616d0000b273bc5b8079eaec602335cc6e5d"
+        }
+    ]
+}
