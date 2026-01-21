@@ -6,13 +6,14 @@ import com.audtream.server.model.dto.RegisterRequest;
 import com.audtream.server.model.entity.UserEntity;
 import com.audtream.server.service.AuthService;
 import com.audtream.server.service.UserService;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/auth")
 @CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
@@ -30,7 +31,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        UserEntity userEntity = userService.registerUser(registerRequest);
+        UserEntity user = userService.registerUser(registerRequest);
 
         AuthRequest authRequest = new AuthRequest();
         authRequest.setUsername(registerRequest.getUsername());

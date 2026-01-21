@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class ApiConfig {
-    private static final String BASE_URL = "http://localhost:8080/api/v1";
+    private static final String BASE_URL = "http://localhost:8080/api";
     private static OkHttpClient httpClient;
     private static ObjectMapper objectMapper;
 
@@ -22,7 +22,8 @@ public class ApiConfig {
                         return chain.proceed(requestBuilder.build());
                     }
                     return chain.proceed(originalRequest);
-                }).build();
+                })
+                .build();
 
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
