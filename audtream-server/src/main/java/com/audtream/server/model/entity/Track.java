@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tracks")
-public class TrackEntity {
+public class Track {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,11 +31,11 @@ public class TrackEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private UserEntity user;
+    private User user;
 
-    public TrackEntity() {}
+    public Track() {}
 
-    public TrackEntity(String title, String artist, String album){
+    public Track(String title, String artist, String album){
         this.title = title;
         this.artist = artist;
         this.album = album;
@@ -73,7 +73,7 @@ public class TrackEntity {
         this.createdAt = createdAt;
     }
 
-    public void setUser(UserEntity user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -109,7 +109,7 @@ public class TrackEntity {
         return createdAt;
     }
 
-    public UserEntity getUser() {
+    public User getUser() {
         return user;
     }
 }

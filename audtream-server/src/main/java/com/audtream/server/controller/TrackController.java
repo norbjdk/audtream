@@ -1,20 +1,20 @@
 package com.audtream.server.controller;
 
-import com.audtream.server.model.entity.TrackEntity;
-import com.audtream.server.model.entity.UserEntity;
+import com.audtream.server.model.entity.Track;
+import com.audtream.server.model.entity.User;
 import com.audtream.server.model.repository.TrackRepository;
 import com.audtream.server.model.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/tracks")
-@CrossOrigin(origins = "https:localhost:5173")
+@RequestMapping("/api/tracks")
+@CrossOrigin(origins = "http://localhost:5173")
 public class TrackController {
 
     @Autowired
@@ -24,31 +24,31 @@ public class TrackController {
     private UserRepository userRepository;
 
     @GetMapping
-    public ResponseEntity<List<TrackEntity>> getUserTracks() {
+    public ResponseEntity<List<Track>> getUserTracks() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserEntity user = userRepository.findByUsername(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<TrackEntity> tracks = trackRepository.findByUserId(user.getId());
+        List<Track> tracks = trackRepository.findByUserId(user.getId());
         return ResponseEntity.ok(tracks);
     }
 
     @PostMapping
-    public ResponseEntity<TrackEntity> createTrack(@RequestBody TrackEntity track) {
+    public ResponseEntity<Track> createTrack(@RequestBody Track track) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserEntity user = userRepository.findByUsername(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         track.setUser(user);
         track.setCreatedAt(LocalDateTime.now());
 
-        TrackEntity savedTrack = trackRepository.save(track);
+        Track savedTrack = trackRepository.save(track);
         return ResponseEntity.ok(savedTrack);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TrackEntity> updateTrack(@PathVariable Long id, @RequestBody TrackEntity trackDetails) {
-        TrackEntity track = trackRepository.findById(id)
+    public ResponseEntity<Track> updateTrack(@PathVariable Long id, @RequestBody Track trackDetails) {
+        Track track = trackRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Track not found"));
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -62,13 +62,13 @@ public class TrackController {
         track.setDuration(trackDetails.getDuration());
         track.setGenre(trackDetails.getGenre());
 
-        TrackEntity updatedTrack = trackRepository.save(track);
+        Track updatedTrack = trackRepository.save(track);
         return ResponseEntity.ok(updatedTrack);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTrack(@PathVariable Long id) {
-        TrackEntity track = trackRepository.findById(id)
+        Track track = trackRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Track not found"));
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
