@@ -122,3 +122,8 @@
 .submit-btn:hover {
     -fx-background-color: linear-gradient(to right, #9333ea, #6b21a8);
 }
+
+.error-label {
+    -fx-text-fill: red;
+    -fx-font-size: 14px;
+}

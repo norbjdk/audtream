@@ -88,7 +88,12 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
                      <children>
-                        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" styleClass="submit-btn" text="Sign In" />
+                        <Button fx:id="loginButton" mnemonicParsing="false" styleClass="submit-btn" text="Sign In" />
+                     </children>
+                  </FlowPane>
+                  <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
+                     <children>
+                        <Label fx:id="errorLabel" styleClass="error-label" text="Error" visible="false" />
                      </children>
                   </FlowPane>
                </children>

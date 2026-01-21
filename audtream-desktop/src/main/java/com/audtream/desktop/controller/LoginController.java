@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -20,13 +21,12 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
-    Audtream audtream;
-
     @FXML private GridPane topBar;
     @FXML private ImageView logoView;
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
+    @FXML private Label errorLabel;
 
     private AuthService authService;
     private Runnable onLoginSuccess;
@@ -38,25 +38,25 @@ public class LoginController implements Initializable {
         Audtream.applyAppMovement(topBar);
         loadLogo();
 
+        loginButton.setOnAction(e -> handleLogin());
     }
 
     public void setOnLoginSuccess(Runnable onLoginSuccess) {
         this.onLoginSuccess = onLoginSuccess;
     }
 
-    @FXML
     private void handleLogin() {
         String username = usernameField.getText();
         String password = passwordField.getText();
 
         if (username.isEmpty() || password.isEmpty()) {
-            System.out.println("Fill the data");
+            showError("Please fill all fields");
             return;
         }
 
         new Thread(() -> {
             try {
-                AuthResponse response = new AuthService().login(username, password);
+                var response = authService.login(username, password);
 
                 Platform.runLater(() -> {
                     if (onLoginSuccess != null) {
@@ -64,7 +64,9 @@ public class LoginController implements Initializable {
                     }
                 });
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                Platform.runLater(() -> {
+                    showError("Login failed: " + e.getMessage());
+                });
             }
         }).start();
     }
@@ -92,8 +94,10 @@ public class LoginController implements Initializable {
         Audtream.minimize();
     }
 
-    public void setAudtream(Audtream audtream) {
-        this.audtream = audtream;
+    private void showError(String message) {
+        System.out.println(message);
+        errorLabel.setText(message);
+        errorLabel.setVisible(true);
     }
 }
 

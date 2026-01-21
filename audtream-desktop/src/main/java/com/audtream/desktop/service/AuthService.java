@@ -19,6 +19,7 @@ public class AuthService {
     public AuthResponse login(String username, String password) throws IOException {
         String url = ApiConfig.getBaseUrl() + "/auth/login";
 
+        // Przygotuj request body
         String json = String.format(
                 "{\"username\":\"%s\",\"password\":\"%s\"}",
                 username, password
@@ -36,8 +37,10 @@ public class AuthService {
                 String responseBody = response.body().string();
                 AuthResponse authResponse = mapper.readValue(responseBody, AuthResponse.class);
 
+                // Zapisz token i usera
                 TokenStorage.saveToken(authResponse.getToken());
 
+                // Pobierz pełne dane użytkownika
                 User user = getCurrentUser();
                 if (user != null) {
                     TokenStorage.saveUser(mapper.writeValueAsString(user));

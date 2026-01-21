@@ -51,7 +51,14 @@ public final class Audtream extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/views/login.fxml"));
             Parent root = fxmlLoader.load();
             LoginController controller = fxmlLoader.getController();
-            controller.setAudtream(this);
+            controller.setOnLoginSuccess(() -> {
+                try {
+                    System.out.println("Logged in");
+                    showMainScene();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
             Scene loginScene = new Scene(root, width, height);
             loginScene.setFill(Color.TRANSPARENT);
