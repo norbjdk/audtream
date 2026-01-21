@@ -4,6 +4,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -71,13 +72,13 @@
                   <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" vgap="8.0" GridPane.rowIndex="1">
                      <children>
                         <Label styleClass="input-info-label" text="Username or Email" />
-                        <TextField prefWidth="156.0" promptText="Enter your username or email" styleClass="login-input" />
+                        <TextField fx:id="usernameField" prefWidth="156.0" promptText="Enter your username or email" styleClass="login-input" />
                      </children>
                   </FlowPane>
                   <FlowPane alignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" vgap="8.0" GridPane.rowIndex="2">
                      <children>
                         <Label styleClass="input-info-label" text="Password" />
-                        <TextField prefWidth="156.0" promptText="Enter your password" styleClass="login-input" />
+                        <PasswordField fx:id="passwordField" promptText="Enter your password" styleClass="login-input" />
                      </children>
                   </FlowPane>
                   <FlowPane alignment="CENTER" GridPane.rowIndex="3">
@@ -87,7 +88,7 @@
                   </FlowPane>
                   <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="4">
                      <children>
-                        <Button mnemonicParsing="false" styleClass="submit-btn" text="Sign In" />
+                        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLogin" styleClass="submit-btn" text="Sign In" />
                      </children>
                   </FlowPane>
                </children>

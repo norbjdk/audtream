@@ -1,6 +1,8 @@
 package com.audtream.desktop;
 
 import com.audtream.desktop.controller.LoginController;
+import com.audtream.desktop.controller.MainController;
+import com.audtream.desktop.service.TokenStorage;
 import com.audtream.desktop.util.Logger;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -34,7 +36,8 @@ public final class Audtream extends Application {
         primaryStage.getIcons().add(appIcon);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
 
-        showLoginScene();
+        if (TokenStorage.isLoggedIn()) showMainScene();
+        else showLoginScene();
     }
 
     public static void main(String [] args) {
@@ -59,6 +62,27 @@ public final class Audtream extends Application {
             primaryStage.show();
         } catch (IOException exception) {
             Logger.printErr("Error while loading login.fxml");
+            throw new RuntimeException(exception);
+        }
+    }
+
+    private void showMainScene() {
+        int width = 1800;
+        int height = 900;
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/views/main.fxml"));
+            Parent root = fxmlLoader.load();
+            MainController controller = fxmlLoader.getController();
+
+            Scene mainScene = new Scene(root, width, height);
+            mainScene.setFill(Color.TRANSPARENT);
+            primaryStage.setScene(mainScene);
+            primaryStage.setTitle("Home | AudTream");
+            primaryStage.setMinWidth(width);
+            primaryStage.setMinHeight(height);
+            primaryStage.show();
+        } catch (IOException exception) {
+            Logger.printErr("Error while loading home.fxml");
             throw new RuntimeException(exception);
         }
     }
