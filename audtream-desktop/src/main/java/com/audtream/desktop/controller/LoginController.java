@@ -1,13 +1,20 @@
 package com.audtream.desktop.controller;
 
 import com.audtream.desktop.Audtream;
+import com.audtream.desktop.model.dto.AuthResponse;
+import com.audtream.desktop.service.AuthService;
 import com.audtream.desktop.util.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -17,12 +24,49 @@ public class LoginController implements Initializable {
 
     @FXML private GridPane topBar;
     @FXML private ImageView logoView;
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private Button loginButton;
+
+    private AuthService authService;
+    private Runnable onLoginSuccess;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        authService = new AuthService();
+
         Audtream.applyAppMovement(topBar);
         loadLogo();
 
+    }
+
+    public void setOnLoginSuccess(Runnable onLoginSuccess) {
+        this.onLoginSuccess = onLoginSuccess;
+    }
+
+    @FXML
+    private void handleLogin() {
+        String username = usernameField.getText();
+        String password = passwordField.getText();
+
+        if (username.isEmpty() || password.isEmpty()) {
+            System.out.println("Fill the data");
+            return;
+        }
+
+        new Thread(() -> {
+            try {
+                AuthResponse response = new AuthService().login(username, password);
+
+                Platform.runLater(() -> {
+                    if (onLoginSuccess != null) {
+                        onLoginSuccess.run();
+                    }
+                });
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).start();
     }
 
     private void loadLogo() {

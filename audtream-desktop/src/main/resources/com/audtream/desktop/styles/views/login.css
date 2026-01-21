@@ -1,8 +1,12 @@
 .root {
     -fx-background-color: #212121;
+    -fx-border-color: #444444;
+    -fx-border-radius: 18px;
+    -fx-border-width: 2px;
+    -fx-background-radius: 18px;
     -fx-pref-width: 900px;
     -fx-pref-height: 600px;
-    -fx-padding: 20px;
+    -fx-padding: 10px;
 }
 
 .app-title {
