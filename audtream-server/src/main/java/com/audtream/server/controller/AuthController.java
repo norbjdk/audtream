@@ -3,7 +3,7 @@ package com.audtream.server.controller;
 import com.audtream.server.model.dto.AuthRequest;
 import com.audtream.server.model.dto.AuthResponse;
 import com.audtream.server.model.dto.RegisterRequest;
-import com.audtream.server.model.entity.UserEntity;
+import com.audtream.server.model.entity.User;
 import com.audtream.server.service.AuthService;
 import com.audtream.server.service.UserService;
 
@@ -31,7 +31,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        UserEntity user = userService.registerUser(registerRequest);
+        User user = userService.registerUser(registerRequest);
 
         AuthRequest authRequest = new AuthRequest();
         authRequest.setUsername(registerRequest.getUsername());

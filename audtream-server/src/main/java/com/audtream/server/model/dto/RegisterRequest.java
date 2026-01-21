@@ -1,6 +1,5 @@
 package com.audtream.server.model.dto;
 
-import com.audtream.server.model.entity.UserEntity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -16,13 +15,13 @@ public class RegisterRequest {
     private String password;
 
     @NotBlank(message = "Role declaration is required")
-    private UserEntity.Role role;
+    private String role;
 
-    public UserEntity.Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(UserEntity.Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 

@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/users")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     @Autowired
@@ -23,8 +21,8 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
-        UserResponse userResponse = userService.getUserByUsername(username);
-        return ResponseEntity.ok(userResponse);
+        UserResponse user = userService.getUserByUsername(username);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{username}")
@@ -32,10 +30,4 @@ public class UserController {
         UserResponse user = userService.getUserByUsername(username);
         return ResponseEntity.ok(user);
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponse> getUserByID(@PathVariable long id) {
-        return null;
-    }
-
 }
