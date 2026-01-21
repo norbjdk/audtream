@@ -1,0 +1,127 @@
+.rootPane {
+    -fx-background-color: #0A0A0A;
+    -fx-pref-width: 1920;
+    -fx-pref-height: 1080;
+    -fx-padding: 12px;
+    -fx-background-radius: 6px;
+}
+
+.topBarPane {
+    /*-fx-background-color: green;*/
+}
+
+.topBarPaginationBtn {
+    -fx-background-color: transparent;
+}
+
+.topBarHomeBtn {
+    -fx-background-color: rgba(97, 92, 92, 0.5);
+    -fx-padding: 8px;
+    -fx-background-radius: 50%;
+}
+
+.topBarHomeBtn:hover {
+    -fx-cursor: hand;
+    -fx-background-color: rgba(97, 92, 92, 0.2);
+    -fx-effect: dropshadow(three-pass-box, #9333ea, 10, 0, 0, 5);
+}
+
+.topBarWindowBtn {
+    -fx-padding: 8px;
+    -fx-background-color: transparent;
+}
+
+.topBarWindowBtn:hover {
+    -fx-cursor: hand;
+    -fx-background-color: rgba(173, 165, 165, 0.5);
+    -fx-effect: dropshadow(three-pass-box, #9333ea, 10, 0, 0, 5);
+}
+
+.topBarSearchInput {
+    -fx-text-fill: #EEEEEE;
+    -fx-font-family: Carlito;
+    -fx-font-size: 15px;
+    -fx-padding: 0 0 0 20px;
+    -fx-pref-width: 600px;
+    -fx-pref-height: 40px;
+    -fx-background-radius: 100px;
+    -fx-background-color: #131313;
+    -fx-effect: dropshadow(three-pass-box, #9333ea, 5, 0.1, 0, 5);
+}
+
+.left-main-column {
+    -fx-background-color: #1a1a1a;
+    -fx-background-radius: 18px;
+}
+
+.profile-container {
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
+}
+
+.profile-container-btn {
+    -fx-pref-width: 120px;
+    -fx-pref-height: 10px;
+    -fx-text-fill: #EEEEEE;
+    -fx-background-color: transparent;
+    -fx-border-radius: 8px;
+    -fx-border-width: 2px;
+    -fx-border-color: #9d9d9d;
+    -fx-text-alignment: center;
+}
+
+.track-list-container {
+    -fx-background-color: #1a1a1a;
+    -fx-background-radius: 24px;
+}
+
+.profile-container-btn:hover {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, #9333ea, 10, 0, 0, 5);
+}
+
+.settings-btn {
+    -fx-pref-width: 450px;
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
+    -fx-text-fill: #d2d1d1;
+    -fx-pref-height: 40px;
+}
+
+.track-player-container {
+    -fx-background-color: #1a1a1a;
+    -fx-background-radius: 24px;
+    -fx-background-insets: 0 0 0 0;
+}
+
+.time-label {
+    -fx-text-fill: #9d9d9d;;
+    -fx-font-size: 15px;
+    -fx-font-family: Calibri;
+}
+
+.track-player-button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.icon {
+    -fx-fill: white;
+}
+
+.track-player-button:hover .icon {
+    -fx-fill: #e8f5e9;
+    -fx-effect: dropshadow(gaussian, #9333ea, 3, 0, 0, 1);
+}
+
+.track-title-label {
+    -fx-text-fill: #9333ea;
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+}
+
+.track-author-label {
+    -fx-text-fill: #e8f5e9;
+    -fx-font-size: 13px;
+    -fx-font-weight: 700;
+}
