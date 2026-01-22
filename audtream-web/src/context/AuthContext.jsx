@@ -41,8 +41,7 @@ export const AuthProvider = ({ children }) => {
       const { token } = response.data;
       
       localStorage.setItem('token', token);
-      
-      // Pobierz pełne dane użytkownika
+
       const userResponse = await userAPI.getCurrentUser();
       setUser(userResponse.data);
       localStorage.setItem('user', JSON.stringify(userResponse.data));
@@ -58,13 +57,11 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, email, password, role) => {
     try {
-      // Dodaj role do rejestracji
       const response = await authAPI.register(username, email, password, role);
       const { token } = response.data;
       
       localStorage.setItem('token', token);
-      
-      // Pobierz pełne dane użytkownika
+
       const userResponse = await userAPI.getCurrentUser();
       setUser(userResponse.data);
       localStorage.setItem('user', JSON.stringify(userResponse.data));

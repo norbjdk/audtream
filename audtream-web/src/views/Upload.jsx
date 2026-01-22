@@ -1,37 +1,32 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { tracksAPI } from '../services/api';
+import api from '../services/api';
 
 function Upload() {
     const { user } = useAuth();
     const navigate = useNavigate();
-    
-    // State dla formularza
+
     const [title, setTitle] = useState('');
     const [artist, setArtist] = useState(user?.username || '');
     const [album, setAlbum] = useState('');
     const [duration, setDuration] = useState('');
     const [genre, setGenre] = useState('');
     const [description, setDescription] = useState('');
-    
-    // State dla pliku
+
     const [audioFile, setAudioFile] = useState(null);
     const [audioPreview, setAudioPreview] = useState(null);
     const [coverFile, setCoverFile] = useState(null);
     const [coverPreview, setCoverPreview] = useState(null);
-    
-    // State dla uploadu
+
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [uploadProgress, setUploadProgress] = useState(0);
-    
-    // Refs
+
     const audioInputRef = useRef(null);
     const coverInputRef = useRef(null);
-    
-    // Genres lista
+
     const genres = [
         'Rock', 'Pop', 'Hip Hop', 'Jazz', 'Classical', 'Electronic', 
         'R&B', 'Country', 'Metal', 'Folk', 'Blues', 'Reggae',
@@ -39,18 +34,15 @@ function Upload() {
         'Trance', 'Drum & Bass', 'Dubstep', 'Trap', 'Lo-fi', 'Indie'
     ];
 
-    // Obsługa wyboru pliku audio
     const handleAudioFileChange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
-        
-        // Sprawdź typ pliku
+
         if (!file.type.startsWith('audio/')) {
             setError('Please select an audio file (MP3, WAV, FLAC, etc.)');
             return;
         }
-        
-        // Sprawdź rozmiar pliku (max 50MB)
+
         if (file.size > 50 * 1024 * 1024) {
             setError('Audio file is too large (max 50MB)');
             return;
@@ -58,38 +50,32 @@ function Upload() {
         
         setAudioFile(file);
         setError('');
-        
-        // Utwórz podgląd audio
+
         const objectUrl = URL.createObjectURL(file);
         setAudioPreview(objectUrl);
-        
-        // Pobierz metadane audio (długość)
+
         const audio = new Audio(objectUrl);
         audio.addEventListener('loadedmetadata', () => {
             setDuration(Math.round(audio.duration));
         });
     };
 
-    // Obsługa wyboru okładki
     const handleCoverFileChange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
-        
-        // Sprawdź typ pliku
+
         if (!file.type.startsWith('image/')) {
             setError('Please select an image file (JPG, PNG, etc.)');
             return;
         }
-        
-        // Sprawdź rozmiar pliku (max 5MB)
+
         if (file.size > 5 * 1024 * 1024) {
             setError('Cover image is too large (max 5MB)');
             return;
         }
         
         setCoverFile(file);
-        
-        // Utwórz podgląd okładki
+
         const reader = new FileReader();
         reader.onloadend = () => {
             setCoverPreview(reader.result);
@@ -97,7 +83,6 @@ function Upload() {
         reader.readAsDataURL(file);
     };
 
-    // Format czasu (sekundy -> MM:SS)
     const formatDuration = (seconds) => {
         if (!seconds) return '00:00';
         const mins = Math.floor(seconds / 60);
@@ -105,7 +90,6 @@ function Upload() {
         return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     };
 
-    // Format rozmiaru pliku
     const formatFileSize = (bytes) => {
         if (bytes === 0) return '0 Bytes';
         const k = 1024;
@@ -114,28 +98,26 @@ function Upload() {
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     };
 
-    // Obsługa submit formularza
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
         setSuccess('');
-        
-        // Walidacja
+
         if (!title.trim()) {
             setError('Please enter a track title');
             return;
         }
-        
+
         if (!audioFile) {
             setError('Please select an audio file to upload');
             return;
         }
-        
+
         setLoading(true);
         setUploadProgress(0);
-        
+
         try {
-            // Symulacja progressu (w rzeczywistości byłoby z axios interceptors)
+            // symulacja progresu
             const progressInterval = setInterval(() => {
                 setUploadProgress(prev => {
                     if (prev >= 90) {
@@ -145,32 +127,42 @@ function Upload() {
                     return prev + 10;
                 });
             }, 200);
-            
-            // Tutaj w rzeczywistości wysyłamy plik do backendu
-            // Na razie tworzymy track z danymi (bez faktycznego uploadu pliku)
+
+            // dane tracku do wysyłki
             const trackData = {
                 title: title.trim(),
                 artist: artist.trim(),
                 album: album.trim(),
                 duration: parseInt(duration) || 0,
                 genre: genre,
-                filePath: 'temporary/path.mp3', // W prawdziwej aplikacji to byłby upload
                 description: description.trim()
             };
-            
-            const response = await tracksAPI.createTrack(trackData);
-            
+
+            // FormData do multipart/form-data
+            const formData = new FormData();
+            formData.append(
+                'metadata',
+                new Blob([JSON.stringify(trackData)], { type: 'application/json' })
+            );
+            formData.append('audioFile', audioFile);
+            if (coverFile) {
+                formData.append('coverImage', coverFile);
+            }
+
+            await api.post('/tracks', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+
             clearInterval(progressInterval);
             setUploadProgress(100);
-            
             setSuccess('Track uploaded successfully!');
-            
-            // Reset formularza po 3 sekundach
+
+            // reset form i redirect po 3 sekundach
             setTimeout(() => {
                 resetForm();
                 navigate('/library');
             }, 3000);
-            
+
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to upload track');
         } finally {
@@ -178,7 +170,6 @@ function Upload() {
         }
     };
 
-    // Reset formularza
     const resetForm = () => {
         setTitle('');
         setArtist(user?.username || '');
@@ -196,14 +187,12 @@ function Upload() {
         if (coverInputRef.current) coverInputRef.current.value = '';
     };
 
-    // Cleanup preview URLs
     useEffect(() => {
         return () => {
             if (audioPreview) URL.revokeObjectURL(audioPreview);
         };
     }, [audioPreview]);
 
-    // Sprawdź czy użytkownik jest artystą
     if (user?.role !== 'Artist') {
         return (
             <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-8 mt-20">
@@ -246,7 +235,6 @@ function Upload() {
                     <p className="text-gray-400">Share your music with the world</p>
                 </div>
 
-                {/* Pasek postępu */}
                 {uploadProgress > 0 && uploadProgress < 100 && (
                     <div className="mb-6">
                         <div className="flex justify-between text-sm text-gray-400 mb-1">
@@ -262,7 +250,6 @@ function Upload() {
                     </div>
                 )}
 
-                {/* Wiadomości */}
                 {error && (
                     <div className="mb-6 p-4 bg-red-900/30 border border-red-700 rounded-lg">
                         <p className="text-red-300">{error}</p>
@@ -275,12 +262,9 @@ function Upload() {
                     </div>
                 )}
 
-                {/* Formularz */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Lewa kolumna - Formularz */}
                     <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6">
                         <form onSubmit={handleSubmit} className="space-y-6">
-                            {/* Tytuł */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">
                                     Track Title *
@@ -295,7 +279,6 @@ function Upload() {
                                 />
                             </div>
 
-                            {/* Artysta */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">
                                     Artist
@@ -309,7 +292,6 @@ function Upload() {
                                 />
                             </div>
 
-                            {/* Album */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">
                                     Album (optional)
@@ -323,7 +305,6 @@ function Upload() {
                                 />
                             </div>
 
-                            {/* Gatunek */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">
                                     Genre
@@ -340,7 +321,6 @@ function Upload() {
                                 </select>
                             </div>
 
-                            {/* Opis */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">
                                     Description (optional)
@@ -354,7 +334,6 @@ function Upload() {
                                 />
                             </div>
 
-                            {/* Plik audio */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">
                                     Audio File *
@@ -383,7 +362,6 @@ function Upload() {
                                 </div>
                             </div>
 
-                            {/* Okładka */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-300 mb-2">
                                     Cover Image (optional)
@@ -407,7 +385,6 @@ function Upload() {
                                 </div>
                             </div>
 
-                            {/* Przyciski */}
                             <div className="flex gap-4 pt-4">
                                 <button
                                     type="button"
@@ -435,13 +412,10 @@ function Upload() {
                         </form>
                     </div>
 
-                    {/* Prawa kolumna - Podgląd */}
                     <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6">
                         <h2 className="text-xl font-bold mb-6">Track Preview</h2>
-                        
-                        {/* Karta podglądu */}
+
                         <div className="bg-gray-900/70 rounded-xl p-6 mb-6">
-                            {/* Okładka */}
                             <div className="mb-6">
                                 <div className="aspect-square rounded-lg overflow-hidden bg-gradient-to-br from-purple-900/30 to-pink-900/30 flex items-center justify-center">
                                     {coverPreview ? (
@@ -455,8 +429,7 @@ function Upload() {
                                     )}
                                 </div>
                             </div>
-                            
-                            {/* Informacje o tracku */}
+
                             <div className="space-y-4">
                                 <div>
                                     <h3 className="text-2xl font-bold">
@@ -498,8 +471,7 @@ function Upload() {
                                 )}
                             </div>
                         </div>
-                        
-                        {/* Odtwarzacz audio */}
+
                         {audioPreview && (
                             <div className="bg-gray-900/70 rounded-xl p-6">
                                 <h3 className="font-bold mb-4">Audio Preview</h3>
@@ -515,8 +487,7 @@ function Upload() {
                                 </p>
                             </div>
                         )}
-                        
-                        {/* Informacje dla artysty */}
+
                         <div className="mt-6 p-4 bg-purple-900/20 rounded-lg">
                             <h4 className="font-bold text-purple-300 mb-2">💡 Tips for Artists</h4>
                             <ul className="text-gray-400 text-sm space-y-1">
