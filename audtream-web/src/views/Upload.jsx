@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import api from '../services/api';
+import {tracksAPI} from '../services/api';
 
 function Upload() {
     const { user } = useAuth();
@@ -117,7 +117,6 @@ function Upload() {
         setUploadProgress(0);
 
         try {
-            // symulacja progresu
             const progressInterval = setInterval(() => {
                 setUploadProgress(prev => {
                     if (prev >= 90) {
@@ -128,7 +127,6 @@ function Upload() {
                 });
             }, 200);
 
-            // dane tracku do wysyłki
             const trackData = {
                 title: title.trim(),
                 artist: artist.trim(),
@@ -149,22 +147,20 @@ function Upload() {
                 formData.append('coverImage', coverFile);
             }
 
-            await api.post('/tracks', formData, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+            await tracksAPI.createTrack(formData);
 
             clearInterval(progressInterval);
             setUploadProgress(100);
             setSuccess('Track uploaded successfully!');
 
-            // reset form i redirect po 3 sekundach
             setTimeout(() => {
                 resetForm();
                 navigate('/library');
             }, 3000);
 
         } catch (err) {
-            setError(err.response?.data?.message || 'Failed to upload track');
+            console.error('Upload error:', err);
+            setError(err.response?.data?.message || err.message || 'Failed to upload track');
         } finally {
             setLoading(false);
         }
