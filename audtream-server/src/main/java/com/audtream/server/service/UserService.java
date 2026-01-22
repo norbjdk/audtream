@@ -22,9 +22,13 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        User user = userRepository
+                .findByUsername(login)
+                .or(() -> userRepository.findByEmail(login))
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User not found: " + login)
+                );
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
