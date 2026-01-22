@@ -170,4 +170,56 @@ public class FileStorageService {
             default -> ".bin";
         };
     }
+    public String getPresignedUrl(String objectName, int expirySeconds) throws Exception {
+        return minioClient.getPresignedObjectUrl(
+                GetPresignedObjectUrlArgs.builder()
+                        .method(Method.GET)
+                        .bucket(bucketName)
+                        .object(objectName)
+                        .expiry(expirySeconds)
+                        .build()
+        );
+    }
+
+    public String uploadFile(MultipartFile file, String folder, String customName) throws Exception {
+        String uniqueFileName = customName != null ? customName : generateFileName(file.getOriginalFilename(), file.getContentType());
+        String objectName = folder + "/" + uniqueFileName;
+
+        minioClient.putObject(
+                PutObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(objectName)
+                        .stream(file.getInputStream(), file.getSize(), -1)
+                        .contentType(file.getContentType())
+                        .build()
+        );
+
+        return getFileUrl(objectName);
+    }
+
+    public boolean fileExists(String objectName) throws Exception {
+        try {
+            minioClient.statObject(
+                    StatObjectArgs.builder()
+                            .bucket(bucketName)
+                            .object(objectName)
+                            .build()
+            );
+            return true;
+        } catch (ErrorResponseException e) {
+            if (e.errorResponse().code().equals("NoSuchKey")) {
+                return false;
+            }
+            throw e;
+        }
+    }
+
+    public long getFileSize(String objectName) throws Exception {
+        return minioClient.statObject(
+                StatObjectArgs.builder()
+                        .bucket(bucketName)
+                        .object(objectName)
+                        .build()
+        ).size();
+    }
 }
