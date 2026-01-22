@@ -2,7 +2,6 @@ package com.audtream.server.model.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "tracks")
@@ -20,54 +19,45 @@ public class Track {
 
     private String album;
 
-    private Integer duration;
+    @Column(nullable = false)
+    private Integer duration; // w sekundach
 
-    @Column(name = "file_url")
+    @Column(nullable = false, length = 1000)
     private String fileUrl;
 
-    @Column(name = "file_path")
     private String filePath;
 
-    @Column(name = "file_size")
     private Long fileSize;
 
-    @Column(name = "mime_type")
     private String mimeType;
 
     private Integer bitrate;
 
     private String genre;
 
-    @Column(name = "year")
     private String year;
 
-    @Column(name = "cover_url", columnDefinition = "TEXT")
+    @Column(length = 1000)
     private String coverUrl;
 
-    @Column(name = "plays")
+    @Column(nullable = false)
     private Integer plays = 0;
 
-    @Column(name = "likes")
+    @Column(nullable = false)
     private Integer likes = 0;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Column(length = 1000)
+    private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 
-    public Track() {
-    }
-
-    public Track(String title, String artist) {
-        this.title = title;
-        this.artist = artist;
-    }
+    @Column(nullable = false)
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
@@ -80,6 +70,7 @@ public class Track {
         updatedAt = LocalDateTime.now();
     }
 
+    // Gettery i Settery
     public Long getId() {
         return id;
     }
@@ -200,12 +191,12 @@ public class Track {
         this.likes = likes;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getDescription() {
+        return description;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public User getUser() {
@@ -216,32 +207,19 @@ public class Track {
         this.user = user;
     }
 
-    // === equals & hashCode (po id) ===
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Track)) return false;
-        Track track = (Track) o;
-        return id != null && Objects.equals(id, track.id);
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
-    // === toString ===
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 
-    @Override
-    public String toString() {
-        return "Track{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", artist='" + artist + '\'' +
-                ", album='" + album + '\'' +
-                ", duration=" + duration +
-                '}';
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
-
