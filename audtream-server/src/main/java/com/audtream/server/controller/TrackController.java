@@ -39,8 +39,11 @@ public class TrackController {
     @GetMapping
     public ResponseEntity<List<TrackResponse>> getUserTracks() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUsername(username)
+        User user = userRepository
+                .findByUsername(username)
+                .or(() -> userRepository.findByEmail(username))
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
 
         List<Track> tracks = trackRepository.findByUserId(user.getId());
 
@@ -58,8 +61,11 @@ public class TrackController {
             @RequestPart("metadata") TrackRequest trackRequest) {
 
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUsername(username)
+        User user = userRepository
+                .findByUsername(username)
+                .or(() -> userRepository.findByEmail(username))
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
 
         try {
             AudioAnalysisService.AudioMetadata audioMetadata =
@@ -128,8 +134,11 @@ public class TrackController {
     @DeleteMapping("/{trackId}")
     public ResponseEntity<Void> deleteTrack(@PathVariable Long trackId) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUsername(username)
+        User user = userRepository
+                .findByUsername(username)
+                .or(() -> userRepository.findByEmail(username))
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
 
         Track track = trackRepository.findById(trackId)
                 .orElseThrow(() -> new RuntimeException("Track not found"));
@@ -155,6 +164,38 @@ public class TrackController {
         }
     }
 
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TrackResponse> createTrackJson(
+            @RequestBody TrackRequest trackRequest) {
+
+        String username = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        User user = userRepository
+                .findByUsername(username)
+                .or(() -> userRepository.findByEmail(username))
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+
+        Track track = new Track();
+        track.setTitle(trackRequest.getTitle());
+        track.setArtist(trackRequest.getArtist());
+        track.setAlbum(trackRequest.getAlbum());
+        track.setDuration(trackRequest.getDuration());
+        track.setGenre(trackRequest.getGenre());
+        track.setUser(user);
+
+        track.setFileUrl("PENDING_UPLOAD");
+        track.setMimeType("audio/mpeg");
+        track.setFileSize(0L);
+        track.setBitrate(0);
+
+        Track saved = trackRepository.save(track);
+
+        return ResponseEntity.ok(convertToResponse(saved));
+    }
 
     private String extractObjectNameFromUrl(String url) {
         if (url.startsWith("http")) {
