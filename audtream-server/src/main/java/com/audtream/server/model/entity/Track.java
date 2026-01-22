@@ -41,7 +41,7 @@ public class Track {
     @Column(name = "year")
     private String year;
 
-    @Column(name = "cover_url")
+    @Column(name = "cover_url", columnDefinition = "TEXT")
     private String coverUrl;
 
     @Column(name = "plays")
