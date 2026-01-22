@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -104,17 +105,77 @@ public class TrackController {
     }
 
     @GetMapping("/stream/{trackId}")
-    public ResponseEntity<byte[]> streamTrack(@PathVariable Long trackId) {
+    public ResponseEntity<?> streamTrack(@PathVariable Long trackId) {
         Track track = trackRepository.findById(trackId)
                 .orElseThrow(() -> new RuntimeException("Track not found"));
 
         try {
-            return ResponseEntity.status(302)
-                    .header("Location", track.getFileUrl())
-                    .build();
+            if (track.getFileUrl().contains("?")) {
+                return ResponseEntity.status(302)
+                        .header("Location", track.getFileUrl())
+                        .build();
+            }
+            String objectName = extractObjectNameFromUrl(track.getFileUrl());
+            String presignedUrl = fileStorageService.getPresignedUrl(objectName, 3600);
 
+            return ResponseEntity.status(302)
+                    .header("Location", presignedUrl)
+                    .build();
         } catch (Exception e) {
             throw new RuntimeException("Failed to stream track", e);
+        }
+    }
+    @DeleteMapping("/{trackId}")
+    public ResponseEntity<Void> deleteTrack(@PathVariable Long trackId) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Track track = trackRepository.findById(trackId)
+                .orElseThrow(() -> new RuntimeException("Track not found"));
+
+        if (!track.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("Not authorized to delete this track");
+        }
+
+        try {
+            String audioObjectName = extractObjectNameFromUrl(track.getFileUrl());
+            fileStorageService.deleteFile(audioObjectName);
+
+            if (track.getCoverUrl() != null) {
+                String coverObjectName = extractObjectNameFromUrl(track.getCoverUrl());
+                fileStorageService.deleteFile(coverObjectName);
+            }
+
+            trackRepository.delete(track);
+
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete track", e);
+        }
+    }
+
+
+    private String extractObjectNameFromUrl(String url) {
+        if (url.startsWith("http")) {
+            String[] parts = url.split("/");
+            return String.join("/", Arrays.copyOfRange(parts, 3, parts.length));
+        }
+        return url;
+    }
+
+    @GetMapping("/{trackId}/url")
+    public ResponseEntity<String> getTrackUrl(@PathVariable Long trackId) {
+        Track track = trackRepository.findById(trackId)
+                .orElseThrow(() -> new RuntimeException("Track not found"));
+
+        try {
+            String objectName = extractObjectNameFromUrl(track.getFileUrl());
+            String presignedUrl = fileStorageService.getPresignedUrl(objectName, 3600);
+
+            return ResponseEntity.ok(presignedUrl);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to get track URL", e);
         }
     }
 
