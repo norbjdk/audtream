@@ -17,4 +17,5 @@ module audtream.desktop {
     exports com.audtream.desktop;
     opens com.audtream.desktop.controller to javafx.fxml;
     exports com.audtream.desktop.controller;
+    opens com.audtream.desktop.model.dto to com.fasterxml.jackson.databind;
 }
