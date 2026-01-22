@@ -61,16 +61,13 @@ public class TrackController {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         try {
-            // 1. Analizuj metadane audio
             AudioAnalysisService.AudioMetadata audioMetadata =
                     audioAnalysisService.extractMetadata(audioFile);
 
-            // 2. Upload pliku audio do MinIO
             String audioFileName = trackRequest.getTitle() != null ?
                     trackRequest.getTitle() : audioFile.getOriginalFilename();
             String audioFileUrl = fileStorageService.uploadAudioFile(audioFile, audioFileName);
 
-            // 3. Upload okładki jeśli podano
             String coverUrl = null;
             if (coverImage != null && !coverImage.isEmpty()) {
                 String coverFileName = trackRequest.getTitle() != null ?
@@ -78,7 +75,6 @@ public class TrackController {
                 coverUrl = fileStorageService.uploadCoverImage(coverImage, coverFileName);
             }
 
-            // 4. Utwórz track w bazie
             Track track = new Track();
             track.setTitle(trackRequest.getTitle() != null ?
                     trackRequest.getTitle() : audioMetadata.getTitle());
@@ -113,9 +109,6 @@ public class TrackController {
                 .orElseThrow(() -> new RuntimeException("Track not found"));
 
         try {
-            // Pobierz plik z MinIO jako stream
-            // Możesz tu dodać logikę progresywnego streamowania
-            // Na razie zwracamy redirect do URL
             return ResponseEntity.status(302)
                     .header("Location", track.getFileUrl())
                     .build();
@@ -147,7 +140,6 @@ public class TrackController {
         return ResponseEntity.ok().build();
     }
 
-    // Pozostałe metody (update, delete) pozostają bez zmian
 
     private TrackResponse convertToResponse(Track track) {
         TrackResponse response = new TrackResponse();
