@@ -4,7 +4,9 @@ import { authAPI, userAPI } from '../services/api';
 
 const AuthContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);
+
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -81,6 +83,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     window.location.href = '/login';
   };
+
 
   const value = {
     user,

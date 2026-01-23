@@ -11,6 +11,8 @@ import Song from "./views/Song";
 import Download from "./views/Download";
 import PrivateRoute from "./components/PrivateRoute";
 import Upload from "./views/Upload";
+import Dashboard from "./views/Dashboard.jsx";
+import Settings from "./views/Settings.jsx";
 
 function App() {
     return (
@@ -24,6 +26,8 @@ function App() {
                     <Route path="/register" element={<Register />} />
                     <Route path="/track/:id" element={<Song />} />
                     <Route path="/profile" element={<PrivateRoute><Profile /></PrivateRoute>} />
+                    <Route path="/artist/dashboard" element={<Dashboard />} />
+                    <Route path="/settings" element={<Settings />} />
                     <Route 
                         path="/upload" 
                         element={
