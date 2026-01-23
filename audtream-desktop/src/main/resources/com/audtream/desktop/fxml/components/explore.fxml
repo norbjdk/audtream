@@ -7,12 +7,12 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane style="-fx-background-color: #0a0a0a;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.audtream.desktop.controller.DiscoverController">
+<StackPane style="-fx-background-color: #140a1a; -fx-background-radius: 12px; -fx-padding: 4px" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.audtream.desktop.controller.DiscoverController">
 
     <!-- Main Content -->
     <VBox spacing="0">
         <!-- Search Bar -->
-        <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-background-color: #141414; -fx-padding: 20;">
+        <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-background-color: transparent; -fx-padding: 20;">
             <TextField fx:id="searchField" promptText="🔍 Search tracks, artists, albums..." style="-fx-background-color: #0a0a0a; -fx-text-fill: white; -fx-prompt-text-fill: #666; -fx-padding: 15; -fx-background-radius: 25; -fx-border-color: #2a2a2a; -fx-border-radius: 25; -fx-font-size: 14px;" HBox.hgrow="ALWAYS" />
         </HBox>
 

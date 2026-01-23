@@ -9,10 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -27,25 +24,22 @@ public class MainController implements Initializable {
     @FXML private Button closeBtn;
     @FXML private Label usernameLabel;
     @FXML private VBox contentContainer;
+    @FXML private VBox playlistsContainer;
 
     private MusicPlayerController musicPlayerController;
     private DiscoverController exploreController;
+    private PlaylistsController playlistsController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Setup user profile image
         setupProfileImage();
 
-        // Wyświetl nazwę zalogowanego użytkownika
         setupUserInfo();
 
-        // Załaduj Explore view
         loadExploreView();
-
-        // Załaduj music player
+        loadPlaylistsComponent();
         //loadMusicPlayer();
 
-        // Setup top bar movement
         Audtream.applyAppMovement(topBarPane);
     }
 
@@ -93,12 +87,27 @@ public class MainController implements Initializable {
         }
     }
 
+    private void loadPlaylistsComponent() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/audtream/desktop/fxml/components/playlists.fxml")
+            );
+
+            BorderPane playlistsComponent = loader.load();
+            playlistsController = loader.getController();
+
+            playlistsContainer.getChildren().add(playlistsComponent);
+        } catch (IOException e) {
+            System.err.println("Failed to load playlists component: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
     private void loadExploreView() {
         try {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/com/audtream/desktop/fxml/components/explore.fxml")
             );
-            // Zmień VBox na StackPane!
             StackPane exploreView = loader.load();
             exploreController = loader.getController();
 
@@ -132,10 +141,8 @@ public class MainController implements Initializable {
             musicPlayerController.cleanup();
         }
 
-        // Wyloguj
         CurrentUserService.logout();
 
         // TODO: Powrót do ekranu logowania
-        // Możesz dodać metodę w Audtream.java do zmiany sceny na login
     }
 }
