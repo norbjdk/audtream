@@ -23,13 +23,13 @@ public class TokenStorage {
         return prefs.get(USER_KEY, null);
     }
 
+    public static boolean isLoggedIn() {
+        String token = getToken();
+        return token != null && !token.isEmpty();
+    }
+
     public static void clear() {
         prefs.remove(TOKEN_KEY);
         prefs.remove(USER_KEY);
-        System.out.println("token cleared");
-    }
-
-    public static boolean isLoggedIn() {
-        return getToken() != null && !getToken().isEmpty();
     }
 }

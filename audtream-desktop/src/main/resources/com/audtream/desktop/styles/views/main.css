@@ -125,3 +125,30 @@
     -fx-font-size: 13px;
     -fx-font-weight: 700;
 }
+
+.username-label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Roboto Thin";
+    -fx-font-weight: 700;
+}
+
+.playlist-button {
+    -fx-text-fill: white;
+    -fx-background-color: #262626;
+    -fx-border-color: gray;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-padding: 8px 12px;
+}
+
+.playlist-container {
+    -fx-padding: 8px;
+}
+
+.playlist-button:hover {
+    -fx-cursor: hand;
+    -fx-background-color: #101010;
+    -fx-effect: dropshadow(three-pass-box, #9333ea, 5, 0, 0, 3);
+}

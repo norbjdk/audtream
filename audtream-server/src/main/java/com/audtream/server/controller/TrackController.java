@@ -36,6 +36,99 @@ public class TrackController {
     @Autowired
     private AudioAnalysisService audioAnalysisService;
 
+    @GetMapping("/all")
+    public ResponseEntity<List<TrackResponse>> getAllTracks(
+            @RequestParam(required = false) String genre,
+            @RequestParam(required = false, defaultValue = "newest") String sort) {
+
+        List<Track> tracks;
+
+        if (genre != null && !genre.isEmpty() && !genre.equalsIgnoreCase("all")) {
+            tracks = trackRepository.findByGenre(genre);
+        } else {
+            tracks = trackRepository.findAll();
+        }
+
+        switch (sort.toLowerCase()) {
+            case "popular":
+                tracks.sort((a, b) -> b.getPlays().compareTo(a.getPlays()));
+                break;
+            case "newest":
+                tracks.sort((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()));
+                break;
+            case "oldest":
+                tracks.sort((a, b) -> a.getCreatedAt().compareTo(b.getCreatedAt()));
+                break;
+            case "liked":
+                tracks.sort((a, b) -> b.getLikes().compareTo(a.getLikes()));
+                break;
+            default:
+                tracks.sort((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()));
+        }
+
+        List<TrackResponse> responses = tracks.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/recommended")
+    public ResponseEntity<List<TrackResponse>> getRecommendedTracks(
+            @RequestParam(required = false, defaultValue = "20") int limit) {
+
+        LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
+
+        List<Track> allTracks = trackRepository.findAll();
+
+        List<Track> recommended = allTracks.stream()
+                .filter(track -> track.getCreatedAt().isAfter(thirtyDaysAgo))
+                .sorted((a, b) -> b.getPlays().compareTo(a.getPlays()))
+                .limit(limit)
+                .collect(Collectors.toList());
+
+        List<TrackResponse> responses = recommended.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/new-releases")
+    public ResponseEntity<List<TrackResponse>> getNewReleases(
+            @RequestParam(required = false, defaultValue = "20") int limit) {
+
+        LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
+
+        List<Track> newTracks = trackRepository.findAll().stream()
+                .filter(track -> track.getCreatedAt().isAfter(sevenDaysAgo))
+                .sorted((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()))
+                .limit(limit)
+                .collect(Collectors.toList());
+
+        List<TrackResponse> responses = newTracks.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/top")
+    public ResponseEntity<List<TrackResponse>> getTopTracks(
+            @RequestParam(required = false, defaultValue = "50") int limit) {
+
+        List<Track> topTracks = trackRepository.findAll().stream()
+                .sorted((a, b) -> b.getPlays().compareTo(a.getPlays()))
+                .limit(limit)
+                .collect(Collectors.toList());
+
+        List<TrackResponse> responses = topTracks.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(responses);
+    }
+
     @GetMapping
     public ResponseEntity<List<TrackResponse>> getUserTracks() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
