@@ -1,0 +1,93 @@
+/* Explore View Styles */
+
+/* ScrollPane */
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: #0a0a0a;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #3a3a3a;
+    -fx-background-radius: 5;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #4a4a4a;
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-background-color: #0a0a0a;
+    -fx-border-color: #2a2a2a;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: #0a0a0a;
+    -fx-text-fill: white;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #2a2a2a;
+}
+
+.combo-box .list-cell:selected {
+    -fx-background-color: #8b5cf6;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: #2a2a2a;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+/* TextField */
+.text-field {
+    -fx-background-color: #0a0a0a;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #666;
+    -fx-border-color: #2a2a2a;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.text-field:focused {
+    -fx-border-color: #8b5cf6;
+    -fx-background-color: #141414;
+}
+
+/* Button Hover Effects */
+.button:hover {
+    -fx-opacity: 0.9;
+}
+
+.button:pressed {
+    -fx-opacity: 0.8;
+}
+
+/* Progress Indicator */
+.progress-indicator {
+    -fx-progress-color: #8b5cf6;
+}
+
+.progress-indicator .percentage {
+    -fx-fill: white;
+}
+
+/* Tooltip */
+.tooltip {
+    -fx-background-color: #2a2a2a;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-padding: 5 10;
+    -fx-font-size: 12px;
+}

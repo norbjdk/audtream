@@ -40,7 +40,7 @@ public class AuthService {
 
                 User user = getCurrentUser();
                 if (user != null) {
-                    TokenStorage.saveUser(mapper.writeValueAsString(user));
+                    CurrentUserService.setCurrentUser(user);
                 }
 
                 return authResponse;
@@ -74,7 +74,7 @@ public class AuthService {
 
                 User user = getCurrentUser();
                 if (user != null) {
-                    TokenStorage.saveUser(mapper.writeValueAsString(user));
+                    CurrentUserService.setCurrentUser(user);
                 }
 
                 return authResponse;
@@ -102,6 +102,6 @@ public class AuthService {
     }
 
     public void logout() {
-        TokenStorage.clear();
+        CurrentUserService.logout();
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane style="-fx-background-color: #140a1a; -fx-background-radius: 12px; -fx-padding: 4px" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.audtream.desktop.controller.DiscoverController">
+
+    <!-- Main Content -->
+    <VBox spacing="0">
+        <!-- Search Bar -->
+        <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-background-color: transparent; -fx-padding: 20;">
+            <TextField fx:id="searchField" promptText="🔍 Search tracks, artists, albums..." style="-fx-background-color: #0a0a0a; -fx-text-fill: white; -fx-prompt-text-fill: #666; -fx-padding: 15; -fx-background-radius: 25; -fx-border-color: #2a2a2a; -fx-border-radius: 25; -fx-font-size: 14px;" HBox.hgrow="ALWAYS" />
+        </HBox>
+
+        <!-- Scrollable Content -->
+        <ScrollPane fx:id="mainScrollPane" fitToWidth="true" style="-fx-background: transparent; -fx-background-color: transparent;" VBox.vgrow="ALWAYS">
+            <VBox fx:id="mainContainer" spacing="20" style="-fx-padding: 30;">
+                <!-- Content will be loaded here dynamically -->
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+    <!-- Loading Indicator -->
+    <ProgressIndicator fx:id="loadingIndicator" style="-fx-progress-color: #8b5cf6;" visible="false" />
+
+</StackPane>

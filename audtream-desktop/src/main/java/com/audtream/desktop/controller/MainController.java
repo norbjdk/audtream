@@ -1,87 +1,148 @@
 package com.audtream.desktop.controller;
 
 import com.audtream.desktop.Audtream;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import com.audtream.desktop.service.CurrentUserService;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPReply;
-
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.io.*;
-import java.net.HttpURLConnection;
 
 public class MainController implements Initializable {
     @FXML private ImageView imgPrev;
     @FXML private GridPane topBarPane;
     @FXML private Button closeBtn;
+    @FXML private Label usernameLabel;
+    @FXML private VBox contentContainer;
+    @FXML private VBox playlistsContainer;
 
-    /**
-     * Music Controller
-     */
-    @FXML private GridPane musicPlayerGrid;
-    @FXML private Label musicTitleLabel;
-    @FXML private Label musicAuthorLabel;
-    @FXML private Button musicPlayButton;
-    @FXML private ProgressBar musicProgressBar;
-
-    private Audtream app;
-    private MediaPlayer mediaPlayer;
-    private boolean isPlaying = false;
-    private final Gson gson = new Gson();
-
-    public void setMainApp(Audtream app) {
-        this.app = app;
-    }
+    private MusicPlayerController musicPlayerController;
+    private DiscoverController exploreController;
+    private PlaylistsController playlistsController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setupProfileImage();
+
+        setupUserInfo();
+
+        loadExploreView();
+        loadPlaylistsComponent();
+        //loadMusicPlayer();
+
+        Audtream.applyAppMovement(topBarPane);
+    }
+
+    private void setupProfileImage() {
         imgPrev.setPreserveRatio(false);
         imgPrev.setFitHeight(150);
         imgPrev.setFitWidth(150);
-        imgPrev.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/audtream/desktop/assets/img/temp/me.jpg")).toExternalForm()));
-        Circle clip = new Circle(75, 75, 75);
-        imgPrev.setClip(clip);
 
-//        App.loadAppMovement(topBarPane);
-//        closeBtn.setOnAction(actionEvent -> App.close());
+        try {
+            imgPrev.setImage(new Image(
+                    Objects.requireNonNull(
+                            getClass().getResource("/com/audtream/desktop/assets/img/temp/me.jpg")
+                    ).toExternalForm()
+            ));
+            Circle clip = new Circle(75, 75, 75);
+            imgPrev.setClip(clip);
+        } catch (Exception e) {
+            System.err.println("Failed to load profile image: " + e.getMessage());
+        }
     }
 
-    private String fetchTrackMetadata(int trackId) throws Exception {
-        HttpClient httpClient = HttpClient.newHttpClient();
-        String url = "http://localhost:8080/api/v1/desktop/track?id=" + trackId;
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
-
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-        if (response.statusCode() == 200) {
-            return response.body();
+    private void setupUserInfo() {
+        String username = CurrentUserService.getUsername();
+        if (username != null) {
+            usernameLabel.setText("Welcome, " + username + "!");
         } else {
-            throw new RuntimeException("API error: " + response.statusCode());
+            usernameLabel.setText("Welcome!");
         }
+    }
+
+    private void loadMusicPlayer() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/audtream/desktop/fxml/components/music-player.fxml")
+            );
+            VBox musicPlayer = loader.load();
+            musicPlayerController = loader.getController();
+
+            // Dodaj music player do kontenera
+            //musicPlayerContainer.getChildren().add(musicPlayer);
+
+        } catch (IOException e) {
+            System.err.println("Failed to load music player: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void loadPlaylistsComponent() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/audtream/desktop/fxml/components/playlists.fxml")
+            );
+
+            BorderPane playlistsComponent = loader.load();
+            playlistsController = loader.getController();
+
+            playlistsContainer.getChildren().add(playlistsComponent);
+        } catch (IOException e) {
+            System.err.println("Failed to load playlists component: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    private void loadExploreView() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/audtream/desktop/fxml/components/explore.fxml")
+            );
+            StackPane exploreView = loader.load();
+            exploreController = loader.getController();
+
+            contentContainer.getChildren().add(exploreView);
+            VBox.setVgrow(exploreView, Priority.ALWAYS);
+
+        } catch (IOException e) {
+            System.err.println("Failed to load explore view: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void close() {
+        // Cleanup music player przed zamknięciem
+        if (musicPlayerController != null) {
+            musicPlayerController.cleanup();
+        }
+        Audtream.close();
+    }
+
+    @FXML
+    private void minimize() {
+        Audtream.minimize();
+    }
+
+    @FXML
+    private void logout() {
+        // Cleanup
+        if (musicPlayerController != null) {
+            musicPlayerController.cleanup();
+        }
+
+        CurrentUserService.logout();
+
+        // TODO: Powrót do ekranu logowania
     }
 }
