@@ -7,14 +7,12 @@ import LibraryIcon from "../assets/icons/library.png";
 function Library() {
     const { user } = useAuth();
     const navigate = useNavigate();
-    
-    // State dla utworów - upewnijmy się że to zawsze array
+
     const [tracks, setTracks] = useState([]);
     const [filteredTracks, setFilteredTracks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    
-    // State dla wyszukiwania i filtrów
+
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedGenre, setSelectedGenre] = useState('All');
     const [sortBy, setSortBy] = useState('newest');
@@ -28,8 +26,7 @@ function Library() {
         'Reggae', 'Punk', 'Funk', 'Soul', 'Disco', 'Techno',
         'House', 'Trance', 'Drum & Bass', 'Dubstep', 'Trap', 'Lo-fi'
     ];
-    
-    // Sort options
+
     const sortOptions = [
         { value: 'newest', label: 'Newest First' },
         { value: 'oldest', label: 'Oldest First' },
@@ -41,7 +38,6 @@ function Library() {
         { value: 'duration-desc', label: 'Longest First' }
     ];
 
-    // Pobierz utwory z backendu - z lepszą obsługą błędów
     useEffect(() => {
         fetchTracks();
     }, []);
