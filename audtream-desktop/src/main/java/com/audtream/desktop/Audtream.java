@@ -36,8 +36,9 @@ public final class Audtream extends Application {
         primaryStage.getIcons().add(appIcon);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
 
-        if (TokenStorage.isLoggedIn()) showMainScene();
-        else showLoginScene();
+//        if (TokenStorage.isLoggedIn()) showMainScene();
+//        else showLoginScene();
+        showMainScene();
     }
 
     public static void main(String [] args) {
