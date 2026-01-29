@@ -1,0 +1,39 @@
+.navbar {
+    -fx-background-color: transparent;
+    -fx-hgap: 10px;
+}
+
+.navbar-page-btn {
+    -fx-background-color: transparent;
+}
+
+.navbar-btn {
+    -fx-background-color: rgba(97, 92, 92, 0.5);
+    -fx-padding: 10px;
+    -fx-background-radius: 50%;
+}
+
+.navbar-window-btn {
+    -fx-alignment: center;
+    -fx-background-color: transparent;
+}
+
+.navbar-btn:hover,
+.navbar-window-btn:hover {
+    -fx-cursor: hand;
+    -fx-background-color: rgba(173, 165, 165, 0.5);
+    -fx-effect: dropshadow(three-pass-box, #9333ea, 10, 0, 0, 5);
+}
+
+.navbar-search-bar {
+    -fx-text-fill: #EEEEEE;
+    -fx-font-family: Carlito;
+    -fx-font-size: 15px;
+    -fx-padding: 0 0 0 20px;
+    -fx-pref-width: 600px;
+    -fx-pref-height: 40px;
+    -fx-background-radius: 50px;
+    -fx-background-color: #131313;
+    -fx-effect: dropshadow(three-pass-box, #9333ea, 5, 0.1, 0, 5);
+}
+
