@@ -1,9 +1,12 @@
 package com.audtream.desktop.controller;
 
 import com.audtream.desktop.Audtream;
+import com.audtream.desktop.components.FeedPanel;
 import com.audtream.desktop.components.NavigationBar;
 import com.audtream.desktop.components.PlayerBox;
 import com.audtream.desktop.components.PlaylistsBox;
+import com.audtream.desktop.model.event.CloseAppEvent;
+import com.audtream.desktop.model.event.EventBus;
 import com.audtream.desktop.service.CurrentUserService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,13 +27,16 @@ public class MainController implements Initializable {
     private final NavigationBar navigationBar = new NavigationBar();
     private final PlaylistsBox playlistsBox = new PlaylistsBox();
     private final PlayerBox playerBox = new PlayerBox();
+    private final FeedPanel feedPanel = new FeedPanel();
 
     private final HBox navContainer = new HBox();
     private final HBox playerContainer = new HBox();
+    private final StackPane contentContainer = new StackPane();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupLayout();
+        applyListeners();
     }
 
     private void setupLayout() {
@@ -47,19 +53,24 @@ public class MainController implements Initializable {
         HBox.setHgrow(playerBox, Priority.ALWAYS);
         playerContainer.getChildren().add(playerBox);
         root.setBottom(playerContainer);
+
+        contentContainer.getChildren().add(feedPanel);
+        contentContainer.setPadding(new Insets(25, 3, 25, 3));
+        root.setCenter(contentContainer);
     }
 
-    @FXML
+    public void applyListeners() {
+        EventBus.getInstance().subscribe(CloseAppEvent.class, event -> close());
+    }
+
     private void close() {
         Audtream.close();
     }
 
-    @FXML
     private void minimize() {
         Audtream.minimize();
     }
 
-    @FXML
     private void logout() {
         CurrentUserService.logout();
     }

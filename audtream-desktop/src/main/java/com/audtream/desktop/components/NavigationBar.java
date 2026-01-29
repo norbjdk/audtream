@@ -1,15 +1,14 @@
 package com.audtream.desktop.components;
 
+import com.audtream.desktop.model.event.CloseAppEvent;
+import com.audtream.desktop.model.event.EventBus;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
-import org.kordamp.ikonli.javafx.FontIcon;
+
 
 import java.util.Objects;
 
@@ -25,6 +24,7 @@ public class NavigationBar extends GridPane {
     private final Button homeBtn = new Button();
     private final Button notificationsBtn = new Button();
     private final Button exploreBtn = new Button();
+    private final Button profileBtn = new Button();
 
     private final SearchBar searchBar = new SearchBar();
 
@@ -34,6 +34,7 @@ public class NavigationBar extends GridPane {
 
         addComponents();
         setupStyles();
+        applyEvents();
     }
 
     private void addComponents() {
@@ -51,6 +52,7 @@ public class NavigationBar extends GridPane {
         setIcon(notificationsBtn, FontAwesomeSolid.BELL);
         setIcon(exploreBtn, FontAwesomeSolid.COMPASS);
         setIcon(optionsBtn, FontAwesomeSolid.ELLIPSIS_V);
+        setIcon(profileBtn, FontAwesomeSolid.USER);
 
         add(optionsBtn, 0, 0);
         add(backwardBtn, 1, 0);
@@ -59,11 +61,12 @@ public class NavigationBar extends GridPane {
         add(lSpacer, 4, 0);
         add(exploreBtn, 5, 0);
         add(searchBar, 6, 0);
-        add(rSpacer, 7, 0);
-        add(notificationsBtn, 8, 0);
-        add(minimizeBtn, 9, 0);
-        add(resizeBtn, 10, 0);
-        add(closeBtn, 11, 0);
+        add(profileBtn, 7, 0);
+        add(rSpacer, 8, 0);
+        add(notificationsBtn, 9, 0);
+        add(minimizeBtn, 10, 0);
+        add(resizeBtn, 11, 0);
+        add(closeBtn, 12, 0);
 
         getChildren().forEach(child -> {
             GridPane.setValignment(child, VPos.CENTER);
@@ -82,5 +85,10 @@ public class NavigationBar extends GridPane {
         homeBtn.getStyleClass().add("navbar-btn");
         notificationsBtn.getStyleClass().add("navbar-btn");
         exploreBtn.getStyleClass().add("navbar-btn");
+        profileBtn.getStyleClass().add("navbar-btn");
+    }
+
+    private void applyEvents() {
+        closeBtn.setOnAction(actionEvent -> EventBus.getInstance().publish(new CloseAppEvent()));
     }
 }

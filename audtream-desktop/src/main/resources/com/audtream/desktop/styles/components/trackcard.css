@@ -1,0 +1,27 @@
+.track-card {
+    -fx-background-color: #424242;
+    -fx-background-radius: 8px;
+    -fx-padding: 7px 13px;
+    -fx-transition: all 1.2s ease;
+    -fx-spacing: 8px;
+}
+
+.track-card:hover {
+    -fx-background-color: linear-gradient(to right, #0A0A0A, #5c2091);
+    -fx-effect: dropshadow(three-pass-box, rgba(135, 136, 136, 0.4), 5, 0, 0, 1);
+    -fx-cursor: hand;
+}
+
+.track-name-label {
+    -fx-text-fill: #eeeeee;
+    -fx-font-size: 15px;
+    -fx-font-family: "Roboto Light";
+    -fx-font-weight: 700;
+}
+
+.track-author-label {
+    -fx-text-fill: #b4b4b4;
+    -fx-font-size: 12px;
+    -fx-font-family: "Roboto Light";
+    -fx-font-weight: 600;
+}

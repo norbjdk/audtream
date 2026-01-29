@@ -4,7 +4,6 @@
 
 .track-card {
     -fx-background-color: transparent;
-    -fx-padding: 4px 10px;
 }
 
 .current-track-name-label {
@@ -22,19 +21,16 @@
 }
 
 .player-panel {
-    -fx-padding: 4px;
     -fx-alignment: center;
-    -fx-spacing: 8px;
+    -fx-spacing: 4px;
 }
 
 .player-panel-first-row {
     -fx-spacing: 10px;
-    -fx-padding: 6px;
 }
 
 .player-panel-second-row {
     -fx-spacing: 5px;
-    -fx-padding: 6px;
 }
 
 .player-panel-second-row Slider {
@@ -43,4 +39,19 @@
 
 .player-btn {
     -fx-background-color: transparent;
+}
+
+.sound-box {
+    -fx-padding: 2px;
+    -fx-alignment: bottom-center;
+}
+
+.sound-btn {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 4px;
+}
+
+.sound-bar {
+    -fx-padding: 4px;
 }

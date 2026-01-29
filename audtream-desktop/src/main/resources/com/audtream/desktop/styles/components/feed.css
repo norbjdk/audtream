@@ -1,0 +1,46 @@
+.feed-panel {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.feed-panel .viewport {
+    -fx-background-color: #1a1a1a;
+    -fx-background-radius: 16px;
+}
+
+.feed-panel .content {
+    -fx-background-color: #1a1a1a;
+    -fx-padding: 20px;
+}
+
+.feed-panel .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-padding: 0 0 0 10px;
+}
+
+.feed-panel .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+}
+
+.feed-panel .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 8px;
+}
+
+.feed-content {
+    -fx-padding: 10px;
+    -fx-spacing: 20px;
+}
+
+.feed-header,
+.feed-trending-label {
+    -fx-text-fill: #eeeeee;
+    -fx-font-size: 32px;
+    -fx-font-family: "Roboto Thin";
+    -fx-font-weight: 700;
+    -fx-padding: 10px;
+}
+
+.feed-logo-container {
+    -fx-padding: 16px;
+}

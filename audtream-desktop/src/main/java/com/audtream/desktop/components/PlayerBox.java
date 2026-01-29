@@ -10,6 +10,7 @@ import java.util.Objects;
 public class PlayerBox extends GridPane {
     private final CurrentTrackCard trackCard = new CurrentTrackCard(0L, "Je te laisserai des mots", "Patrick Watson", "/com/audtream/desktop/assets/img/temp/sample.jpg");
     private final PlayerPanel playerPanel = new PlayerPanel();
+    private final SoundBox soundBox = new SoundBox();
 
     public PlayerBox() {
         getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/audtream/desktop/styles/components/player.css")).toExternalForm());
@@ -24,9 +25,10 @@ public class PlayerBox extends GridPane {
         add(lSpacer, 1, 0);
         add(playerPanel, 2, 0);
         add(rSpacer, 3, 0);
+        add(soundBox, 4, 0);
 
         getChildren().forEach(child -> {
-            GridPane.setValignment(child, VPos.CENTER);
+            GridPane.setValignment(child, VPos.BOTTOM);
         });
     }
 }

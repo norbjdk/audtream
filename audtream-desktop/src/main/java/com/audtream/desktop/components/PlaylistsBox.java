@@ -59,7 +59,6 @@ public class PlaylistsBox extends VBox {
         thirdRow.getChildren().add(new PlaylistCard(0L, "Rainy Day", "AudTream", "https://education.oracle.com/file/general/p-80-java.png"));
         thirdRow.getChildren().add(new PlaylistCard(0L, "RUSH!", "Maneskin", "https://education.oracle.com/file/general/p-80-java.png"));
         thirdRow.getChildren().add(new PlaylistCard(0L, "Broken Heart", "AudTream", "https://education.oracle.com/file/general/p-80-java.png"));
-        thirdRow.getChildren().add(new PlaylistCard(0L, "Ciche motyle", "Fioorinn", "https://education.oracle.com/file/general/p-80-java.png"));
         thirdRow.getChildren().add(new PlaylistCard(0L, "Car Songs", "AudTream", "https://education.oracle.com/file/general/p-80-java.png"));
         thirdRow.getChildren().add(new PlaylistCard(0L, "Slowed Songs + Reverb", "musicenjoyer3000", "https://education.oracle.com/file/general/p-80-java.png"));
         rows.add(thirdRow);

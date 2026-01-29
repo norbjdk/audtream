@@ -23,6 +23,10 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * Test user: tesguy, tesguy12345
+ */
+
 public final class Audtream extends Application {
     private static Stage primaryStage;
 
@@ -37,10 +41,9 @@ public final class Audtream extends Application {
         primaryStage.getIcons().add(appIcon);
         primaryStage.initStyle(StageStyle.TRANSPARENT);
 
-//        if (TokenStorage.isLoggedIn()) showMainScene();
-//        else showLoginScene();
+        if (TokenStorage.isLoggedIn()) showMainScene();
+        else showLoginScene();
         AppConfig.configureSSL();
-        showMainScene();
     }
 
     public static void main(String [] args) {
@@ -77,8 +80,8 @@ public final class Audtream extends Application {
     }
 
     private void showMainScene() {
-        int width = 1800;
-        int height = 900;
+        int width = 1600;
+        int height = 800;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/views/main.fxml"));
             Parent root = fxmlLoader.load();
