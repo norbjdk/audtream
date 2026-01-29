@@ -12,6 +12,9 @@ module audtream.desktop {
     requires javafx.media;
     requires org.apache.commons.net;
     requires java.net.http;
+    requires org.kordamp.ikonli.javafx;
+    requires org.kordamp.ikonli.fontawesome5;
+    requires org.checkerframework.checker.qual;
 
     opens com.audtream.desktop to javafx.fxml;
     exports com.audtream.desktop;

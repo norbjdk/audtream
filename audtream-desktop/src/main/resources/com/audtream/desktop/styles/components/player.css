@@ -1,0 +1,46 @@
+.player-box {
+    -fx-padding: 5px;
+}
+
+.track-card {
+    -fx-background-color: transparent;
+    -fx-padding: 4px 10px;
+}
+
+.current-track-name-label {
+    -fx-text-fill: #eeeeee;
+    -fx-font-size: 16px;
+    -fx-font-family: "Roboto Light";
+    -fx-font-weight: 700;
+}
+
+.current-track-author-label {
+    -fx-text-fill: #b4b4b4;
+    -fx-font-size: 13px;
+    -fx-font-family: "Roboto Light";
+    -fx-font-weight: 600;
+}
+
+.player-panel {
+    -fx-padding: 4px;
+    -fx-alignment: center;
+    -fx-spacing: 8px;
+}
+
+.player-panel-first-row {
+    -fx-spacing: 10px;
+    -fx-padding: 6px;
+}
+
+.player-panel-second-row {
+    -fx-spacing: 5px;
+    -fx-padding: 6px;
+}
+
+.player-panel-second-row Slider {
+    -fx-pref-width: 500px;
+}
+
+.player-btn {
+    -fx-background-color: transparent;
+}

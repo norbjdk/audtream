@@ -1,5 +1,6 @@
 package com.audtream.desktop;
 
+import com.audtream.desktop.config.AppConfig;
 import com.audtream.desktop.controller.LoginController;
 import com.audtream.desktop.controller.MainController;
 import com.audtream.desktop.service.TokenStorage;
@@ -38,6 +39,7 @@ public final class Audtream extends Application {
 
 //        if (TokenStorage.isLoggedIn()) showMainScene();
 //        else showLoginScene();
+        AppConfig.configureSSL();
         showMainScene();
     }
 
