@@ -2,10 +2,7 @@ package com.audtream.desktop.components;
 
 import com.audtream.desktop.Audtream;
 import com.audtream.desktop.model.dto.internal.EnterProfileRequest;
-import com.audtream.desktop.model.event.CloseAppEvent;
-import com.audtream.desktop.model.event.EnterProfileEvent;
-import com.audtream.desktop.model.event.EventBus;
-import com.audtream.desktop.model.event.LogoutUserEvent;
+import com.audtream.desktop.model.event.*;
 import com.audtream.desktop.service.CurrentUserService;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
@@ -106,6 +103,9 @@ public class NavigationBar extends GridPane {
             EnterProfileRequest request = new EnterProfileRequest();
             request.setId(CurrentUserService.getUserId());
             EventBus.getInstance().publish(new EnterProfileEvent(request));
+        });
+        homeBtn.setOnAction(actionEvent -> {
+            EventBus.getInstance().publish(new EnterFeedEvent());
         });
     }
 }

@@ -1,0 +1,118 @@
+/* ========== PROFILE PANEL ========== */
+.profile-panel {
+    -fx-background-color: #1a1a1a;
+    -fx-background-radius: 16px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.3), 10, 0, 0, 2);
+    -fx-border-color: #5c2091;
+    -fx-border-width: 1px;
+    -fx-border-radius: 16px;
+}
+
+/* ========== HEADER TEXT ========== */
+.profile-panel Label {
+    -fx-font-family: "Roboto Light";
+    -fx-font-weight: 600;
+    -fx-padding: 2px 0px;
+}
+
+/* Klasy dla konkretnych elementów */
+.username-label {
+    -fx-text-fill: #eeeeee;
+    -fx-font-size: 20px;
+    -fx-font-weight: 700;
+    -fx-padding: 0px 0px 10px 0px;
+    -fx-border-color: #5c2091;
+    -fx-border-width: 0px 0px 1px 0px;
+    -fx-border-insets: 0px 0px 5px 0px;
+}
+
+.email-label {
+    -fx-text-fill: #b4b4b4;
+    -fx-font-size: 14px;
+}
+
+.role-label {
+    -fx-text-fill: #b4b4b4;
+    -fx-font-size: 14px;
+}
+
+/* Statystyki - wspólne style */
+.stat-label {
+    -fx-background-color: #282828;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 15px;
+    -fx-border-color: #424242;
+    -fx-border-width: 1px;
+    -fx-border-radius: 8px;
+    -fx-font-size: 14px;
+}
+
+/* Kolory tekstu dla statystyk */
+.total-tracks-label {
+    -fx-text-fill: #eeeeee;
+}
+
+.total-plays-label {
+    -fx-text-fill: #4CAF50; /* Zielony dla odtworzeń */
+}
+
+.total-likes-label {
+    -fx-text-fill: #FF4081; /* Różowy dla like'ów */
+}
+
+.top-genre-label {
+    -fx-text-fill: #FF9800; /* Pomarańczowy dla gatunku */
+}
+
+.avg-duration-label {
+    -fx-text-fill: #03A9F4; /* Niebieski dla czasu */
+}
+
+.most-played-label {
+    -fx-text-fill: #9C27B0; /* Fioletowy dla najpopularniejszego */
+}
+
+/* Hover effect na statystykach */
+.stat-label:hover {
+    -fx-background-color: linear-gradient(to right, #1e112a, #5c2091);
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(135, 136, 136, 0.4), 5, 0, 0, 1);
+    -fx-cursor: hand;
+}
+
+/* ========== ANIMATIONS ========== */
+.fade-in {
+    -fx-opacity: 0;
+}
+
+.fade-in.animated {
+    -fx-opacity: 1;
+    -fx-translate-y: 0px;
+    -fx-transition: all 0.5s ease-out;
+}
+
+/* ========== AVATAR STYLES ========== */
+.profile-avatar {
+    -fx-fill: #5c2091;
+    -fx-stroke: #424242;
+    -fx-stroke-width: 2;
+}
+
+/* ========== STATS SECTION ========== */
+.stats-section {
+    -fx-spacing: 10px;
+}
+
+.stat-title {
+    -fx-text-fill: #b4b4b4;
+    -fx-font-family: "Roboto Light";
+    -fx-font-size: 14px;
+    -fx-min-width: 120px;
+}
+
+/* Separator */
+.separator {
+    -fx-background-color: #424242;
+    -fx-background-radius: 2px;
+    -fx-pref-height: 1px;
+}

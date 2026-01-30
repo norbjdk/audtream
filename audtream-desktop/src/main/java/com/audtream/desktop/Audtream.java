@@ -29,14 +29,14 @@ import java.util.Objects;
 
 public final class Audtream extends Application {
     private static Stage primaryStage;
-
+    public static Audtream instance;
     private static Image appIcon;
     private static int appXPos = 0;
     private static int appYPos = 0;
     @Override
     public void start(Stage stage) throws Exception {
         appIcon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("assets/icons/logo.png")));
-
+        instance = this;
         primaryStage = stage;
         primaryStage.getIcons().add(appIcon);
         primaryStage.initStyle(StageStyle.TRANSPARENT);

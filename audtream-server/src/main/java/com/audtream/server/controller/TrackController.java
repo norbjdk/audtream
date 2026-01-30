@@ -294,8 +294,27 @@ public class TrackController {
 
     private String extractObjectNameFromUrl(String url) {
         if (url.startsWith("http")) {
+            // Usuń parametry query jeśli istnieją
+            if (url.contains("?")) {
+                url = url.substring(0, url.indexOf("?"));
+            }
+
+            // Usuń endpoint i bucket z URL
+            // http://localhost:9000/music-files/audio/filename.wav
             String[] parts = url.split("/");
-            return String.join("/", Arrays.copyOfRange(parts, 3, parts.length));
+            if (parts.length >= 5) {
+                // parts[0] = "http:"
+                // parts[1] = ""
+                // parts[2] = "localhost:9000"
+                // parts[3] = "music-files" (bucket)
+                // parts[4+] = "audio/filename.wav" (objectName)
+                StringBuilder objectName = new StringBuilder();
+                for (int i = 4; i < parts.length; i++) {
+                    if (objectName.length() > 0) objectName.append("/");
+                    objectName.append(parts[i]);
+                }
+                return objectName.toString();
+            }
         }
         return url;
     }
@@ -306,7 +325,13 @@ public class TrackController {
                 .orElseThrow(() -> new RuntimeException("Track not found"));
 
         try {
-            String objectName = extractObjectNameFromUrl(track.getFileUrl());
+            // 1. Pobierz vanilla URL z bazy
+            String vanillaUrl = track.getFileUrl(); // np: http://localhost:9000/music-files/audio/filename.wav
+
+            // 2. Wyciągnij objectName z vanilla URL
+            String objectName = extractObjectNameFromUrl(vanillaUrl);
+
+            // 3. Wygeneruj NOWY pre-signed URL
             String presignedUrl = fileStorageService.getPresignedUrl(objectName, 3600);
 
             return ResponseEntity.ok(presignedUrl);
@@ -314,6 +339,7 @@ public class TrackController {
             throw new RuntimeException("Failed to get track URL", e);
         }
     }
+
 
     @PostMapping("/{trackId}/play")
     public ResponseEntity<Void> incrementPlayCount(@PathVariable Long trackId) {

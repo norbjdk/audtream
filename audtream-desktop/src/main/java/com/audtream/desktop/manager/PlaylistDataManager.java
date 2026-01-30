@@ -2,13 +2,11 @@ package com.audtream.desktop.manager;
 
 import com.audtream.desktop.model.dto.PlaylistDTO;
 import com.audtream.desktop.model.dto.PlaylistRequest;
-import com.audtream.desktop.model.dto.TrackDTO;
 import com.audtream.desktop.model.event.*;
 import com.audtream.desktop.service.PlaylistService;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 public class PlaylistDataManager {
     private static PlaylistDataManager instance;
@@ -35,7 +33,7 @@ public class PlaylistDataManager {
     }
 
     public PlaylistDTO createPlaylist(PlaylistRequest request) throws IOException {
-        PlaylistDTO created = convertToPlaylistDTO(playlistService.createPlaylist(request));
+        PlaylistDTO created = playlistService.createPlaylist(request); // Już zwraca PlaylistDTO
         playlistCache.put(created.getId(), created);
         if (userPlaylists != null) {
             userPlaylists.add(created);
@@ -49,13 +47,13 @@ public class PlaylistDataManager {
             return playlistCache.get(playlistId);
         }
 
-        PlaylistDTO playlist = convertToPlaylistDTO(playlistService.getPlaylist(playlistId));
+        PlaylistDTO playlist = playlistService.getPlaylist(playlistId); // Już zwraca PlaylistDTO
         playlistCache.put(playlistId, playlist);
         return playlist;
     }
 
     public PlaylistDTO updatePlaylist(Long playlistId, PlaylistRequest request) throws IOException {
-        PlaylistDTO updated = convertToPlaylistDTO(playlistService.updatePlaylist(playlistId, request));
+        PlaylistDTO updated = playlistService.updatePlaylist(playlistId, request); // Już zwraca PlaylistDTO
         playlistCache.put(playlistId, updated);
         if (userPlaylists != null) {
             userPlaylists.removeIf(p -> p.getId().equals(playlistId));
@@ -75,14 +73,14 @@ public class PlaylistDataManager {
     }
 
     public PlaylistDTO addTrack(Long playlistId, Long trackId) throws IOException {
-        PlaylistDTO updated = convertToPlaylistDTO(playlistService.addTrackToPlaylist(playlistId, trackId));
+        PlaylistDTO updated = playlistService.addTrackToPlaylist(playlistId, trackId); // Już zwraca PlaylistDTO
         playlistCache.put(playlistId, updated);
         EventBus.getInstance().publish(new PlaylistTracksChangedEvent(playlistId));
         return updated;
     }
 
     public PlaylistDTO removeTrack(Long playlistId, Long trackId) throws IOException {
-        PlaylistDTO updated = convertToPlaylistDTO(playlistService.removeTrackFromPlaylist(playlistId, trackId));
+        PlaylistDTO updated = playlistService.removeTrackFromPlaylist(playlistId, trackId); // Już zwraca PlaylistDTO
         playlistCache.put(playlistId, updated);
         EventBus.getInstance().publish(new PlaylistTracksChangedEvent(playlistId));
         return updated;
@@ -94,7 +92,7 @@ public class PlaylistDataManager {
             return new ArrayList<>(userPlaylists);
         }
 
-        userPlaylists = convertToPlaylistDTO(playlistService.getUserPlaylists());
+        userPlaylists = playlistService.getUserPlaylists(); // Już zwraca PlaylistDTO
         lastUserPlaylistsFetch = now;
         userPlaylists.forEach(playlist -> playlistCache.put(playlist.getId(), playlist));
         EventBus.getInstance().publish(new DataRefreshedEvent("user_playlists"));
@@ -102,7 +100,7 @@ public class PlaylistDataManager {
     }
 
     public List<PlaylistDTO> getUserPublicPlaylists(Long userId, boolean forceRefresh) throws IOException {
-        List<PlaylistDTO> playlists = convertToPlaylistDTO(playlistService.getUserPublicPlaylists(userId));
+        List<PlaylistDTO> playlists = playlistService.getUserPublicPlaylists(userId); // Już zwraca PlaylistDTO
         playlists.forEach(playlist -> playlistCache.put(playlist.getId(), playlist));
         return playlists;
     }
@@ -112,7 +110,7 @@ public class PlaylistDataManager {
             return new ArrayList<>(trendingPlaylists);
         }
 
-        trendingPlaylists = convertToPlaylistDTO(playlistService.getTrendingPlaylists(limit));
+        trendingPlaylists = playlistService.getTrendingPlaylists(limit); // Już zwraca PlaylistDTO
         trendingPlaylists.forEach(playlist -> playlistCache.put(playlist.getId(), playlist));
         return new ArrayList<>(trendingPlaylists);
     }
@@ -122,7 +120,7 @@ public class PlaylistDataManager {
             return new ArrayList<>(newPlaylists);
         }
 
-        newPlaylists = convertToPlaylistDTO(playlistService.getNewPlaylists(limit));
+        newPlaylists = playlistService.getNewPlaylists(limit); // Już zwraca PlaylistDTO
         newPlaylists.forEach(playlist -> playlistCache.put(playlist.getId(), playlist));
         return new ArrayList<>(newPlaylists);
     }
@@ -132,13 +130,13 @@ public class PlaylistDataManager {
             return new ArrayList<>(topPlaylists);
         }
 
-        topPlaylists = convertToPlaylistDTO(playlistService.getTopPlaylists(limit));
+        topPlaylists = playlistService.getTopPlaylists(limit); // Już zwraca PlaylistDTO
         topPlaylists.forEach(playlist -> playlistCache.put(playlist.getId(), playlist));
         return new ArrayList<>(topPlaylists);
     }
 
     public List<PlaylistDTO> searchPlaylists(String query, int limit) throws IOException {
-        List<PlaylistDTO> results = convertToPlaylistDTO(playlistService.searchPlaylists(query, limit));
+        List<PlaylistDTO> results = playlistService.searchPlaylists(query, limit); // Już zwraca PlaylistDTO
         results.forEach(playlist -> playlistCache.put(playlist.getId(), playlist));
         return results;
     }
@@ -167,59 +165,5 @@ public class PlaylistDataManager {
         newPlaylists = null;
         topPlaylists = null;
         lastUserPlaylistsFetch = 0;
-    }
-
-    // KONWERSJA Z PlaylistResponse NA PlaylistDTO
-    private PlaylistDTO convertToPlaylistDTO(com.audtream.desktop.model.dto.PlaylistResponse response) {
-        if (response == null) return null;
-
-        PlaylistDTO dto = new PlaylistDTO();
-        dto.setId(response.getId());
-        dto.setName(response.getName());
-        dto.setDescription(response.getDescription());
-        dto.setIsPublic(response.getIsPublic());
-        dto.setCoverImageUrl(response.getCoverImageUrl());
-        dto.setTrackCount(response.getTrackCount());
-        dto.setTotalDuration(response.getTotalDuration());
-        dto.setPlays(response.getPlays());
-        dto.setLikes(response.getLikes());
-        dto.setCreatedAt(response.getCreatedAt());
-        dto.setUpdatedAt(response.getUpdatedAt());
-        dto.setUserId(response.getUserId());
-        dto.setUsername(response.getUsername());
-
-        // Konwersja tracków jeśli istnieją
-        if (response.getTracks() != null) {
-            // Musisz mieć metodę convertToTrackDTO w TrackDataManager lub osobny konwerter
-            // dto.setTracks(convertTracks(response.getTracks()));
-        }
-
-        return dto;
-    }
-
-    private List<PlaylistDTO> convertToPlaylistDTO(List<com.audtream.desktop.model.dto.PlaylistResponse> responses) {
-        if (responses == null) return new ArrayList<>();
-        return responses.stream()
-                .map(this::convertToPlaylistDTO)
-                .collect(Collectors.toList());
-    }
-
-    // Opcjonalnie: jeśli potrzebujesz konwersji tracków
-    private List<TrackDTO> convertTracks(List<com.audtream.desktop.model.dto.TrackResponse> trackResponses) {
-        if (trackResponses == null) return new ArrayList<>();
-
-        // Tu użyj konwertera z TrackDataManager lub utwórz własny
-        // Na przykład:
-        // return trackResponses.stream()
-        //         .map(trackResponse -> {
-        //             TrackDTO trackDTO = new TrackDTO();
-        //             trackDTO.setId(trackResponse.getId());
-        //             trackDTO.setTitle(trackResponse.getTitle());
-        //             // ... i tak dalej
-        //             return trackDTO;
-        //         })
-        //         .collect(Collectors.toList());
-
-        return new ArrayList<>(); // placeholder
     }
 }

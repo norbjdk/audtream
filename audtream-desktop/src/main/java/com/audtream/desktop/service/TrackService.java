@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,7 +148,20 @@ public class TrackService {
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful() && response.body() != null) {
-                return response.body().string().replace("\"", ""); // Usuń cudzysłowy
+                String streamUrl = response.body().string().replace("\"", "");
+
+                System.out.println("DEBUG: Raw URL from backend: " + streamUrl);
+
+                // Dekoduj URL JEDEN RAZ
+                streamUrl = URLDecoder.decode(streamUrl, StandardCharsets.UTF_8);
+
+                // Jeśli nadal jest zakodowany (podwójne kodowanie), dekoduj ponownie
+                if (streamUrl.contains("%3F") || streamUrl.contains("%26") || streamUrl.contains("%3D")) {
+                    streamUrl = URLDecoder.decode(streamUrl, StandardCharsets.UTF_8);
+                }
+
+                System.out.println("DEBUG: Decoded URL: " + streamUrl);
+                return streamUrl;
             } else {
                 throw new IOException("Failed to get stream URL: " + response.code());
             }

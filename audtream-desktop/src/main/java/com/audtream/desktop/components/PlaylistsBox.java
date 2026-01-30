@@ -103,12 +103,21 @@ public class PlaylistsBox extends VBox {
     }
 
     private void handleCreatePlaylist() {
-        new Thread(() -> {
-            try {
-                app.createPlaylist("New Playlist", "", true);
-            } catch (Exception e) {
+        Platform.runLater(() -> {
+            CreatePlaylistDialog dialog = new CreatePlaylistDialog();
+            dialog.showAndWait();
+
+            if (dialog.isConfirmed()) {
+                String playlistName = dialog.getPlaylistName();
+                new Thread(() -> {
+                    try {
+                        app.createPlaylist(playlistName, "", true);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }).start();
             }
-        }).start();
+        });
     }
 
     private void handlePlaylistClick(PlaylistDTO playlist) {

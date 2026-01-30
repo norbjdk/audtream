@@ -2,10 +2,7 @@ package com.audtream.desktop.controller;
 
 import com.audtream.desktop.Audtream;
 import com.audtream.desktop.components.*;
-import com.audtream.desktop.model.event.CloseAppEvent;
-import com.audtream.desktop.model.event.EnterProfileEvent;
-import com.audtream.desktop.model.event.EventBus;
-import com.audtream.desktop.model.event.LogoutUserEvent;
+import com.audtream.desktop.model.event.*;
 import com.audtream.desktop.service.CurrentUserService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -74,6 +71,7 @@ public class MainController implements Initializable {
         EventBus.getInstance().subscribe(EnterProfileEvent.class, event -> {
             changeContent("profile");
         });
+        EventBus.getInstance().subscribe(EnterFeedEvent.class, event -> changeContent("feed"));
     }
 
     private void close() {
@@ -86,5 +84,6 @@ public class MainController implements Initializable {
 
     private void logout() {
         CurrentUserService.logout();
+        close();
     }
 }

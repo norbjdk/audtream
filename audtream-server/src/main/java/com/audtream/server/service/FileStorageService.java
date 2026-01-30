@@ -24,6 +24,9 @@ public class FileStorageService {
     @Value("${minio.bucket-name}")
     private String bucketName;
 
+    @Value("${minio.endpoint}")
+    private String endpoint;
+
     @PostConstruct
     public void init() {
         try {
@@ -103,13 +106,11 @@ public class FileStorageService {
     }
 
     public String getFileUrl(String objectName) throws Exception {
-        return minioClient.getPresignedObjectUrl(
-                GetPresignedObjectUrlArgs.builder()
-                        .method(Method.GET)
-                        .bucket(bucketName)
-                        .object(objectName)
-                        .expiry(60 * 60 * 24 * 7) // 7 dni
-                        .build()
+        // Użyj endpoint z konfiguracji
+        return String.format("%s/%s/%s",
+                endpoint,          // http://localhost:9000
+                bucketName,        // music-files
+                objectName         // audio/filename.wav
         );
     }
 
