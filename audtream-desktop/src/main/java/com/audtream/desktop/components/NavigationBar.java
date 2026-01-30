@@ -1,7 +1,12 @@
 package com.audtream.desktop.components;
 
+import com.audtream.desktop.Audtream;
+import com.audtream.desktop.model.dto.internal.EnterProfileRequest;
 import com.audtream.desktop.model.event.CloseAppEvent;
+import com.audtream.desktop.model.event.EnterProfileEvent;
 import com.audtream.desktop.model.event.EventBus;
+import com.audtream.desktop.model.event.LogoutUserEvent;
+import com.audtream.desktop.service.CurrentUserService;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -25,12 +30,15 @@ public class NavigationBar extends GridPane {
     private final Button notificationsBtn = new Button();
     private final Button exploreBtn = new Button();
     private final Button profileBtn = new Button();
+    private final Button logoutBtn = new Button();
 
     private final SearchBar searchBar = new SearchBar();
 
     public NavigationBar() {
         getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/audtream/desktop/styles/components/navbar.css")).toExternalForm());
         getStyleClass().add("navbar");
+
+        Audtream.applyAppMovement(this);
 
         addComponents();
         setupStyles();
@@ -53,6 +61,7 @@ public class NavigationBar extends GridPane {
         setIcon(exploreBtn, FontAwesomeSolid.COMPASS);
         setIcon(optionsBtn, FontAwesomeSolid.ELLIPSIS_V);
         setIcon(profileBtn, FontAwesomeSolid.USER);
+        setIcon(logoutBtn, FontAwesomeSolid.SIGN_OUT_ALT);
 
         add(optionsBtn, 0, 0);
         add(backwardBtn, 1, 0);
@@ -63,10 +72,11 @@ public class NavigationBar extends GridPane {
         add(searchBar, 6, 0);
         add(profileBtn, 7, 0);
         add(rSpacer, 8, 0);
-        add(notificationsBtn, 9, 0);
-        add(minimizeBtn, 10, 0);
-        add(resizeBtn, 11, 0);
-        add(closeBtn, 12, 0);
+        add(logoutBtn, 9, 0);
+        add(notificationsBtn, 10, 0);
+        add(minimizeBtn, 11, 0);
+        add(resizeBtn, 12, 0);
+        add(closeBtn, 13, 0);
 
         getChildren().forEach(child -> {
             GridPane.setValignment(child, VPos.CENTER);
@@ -86,9 +96,16 @@ public class NavigationBar extends GridPane {
         notificationsBtn.getStyleClass().add("navbar-btn");
         exploreBtn.getStyleClass().add("navbar-btn");
         profileBtn.getStyleClass().add("navbar-btn");
+        logoutBtn.getStyleClass().add("navbar-btn");
     }
 
     private void applyEvents() {
         closeBtn.setOnAction(actionEvent -> EventBus.getInstance().publish(new CloseAppEvent()));
+        logoutBtn.setOnAction(actionEvent -> EventBus.getInstance().publish(new LogoutUserEvent()));
+        profileBtn.setOnAction(actionEvent -> {
+            EnterProfileRequest request = new EnterProfileRequest();
+            request.setId(CurrentUserService.getUserId());
+            EventBus.getInstance().publish(new EnterProfileEvent(request));
+        });
     }
 }

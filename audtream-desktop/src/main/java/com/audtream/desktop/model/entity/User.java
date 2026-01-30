@@ -1,6 +1,5 @@
-package com.audtream.desktop.model.dto;
+package com.audtream.desktop.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
 public class User {

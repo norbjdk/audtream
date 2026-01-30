@@ -57,7 +57,6 @@ public class PlaylistController {
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new RuntimeException("Playlist not found"));
 
-        // Sprawdź czy użytkownik może zobaczyć playlistę
         if (!playlist.getIsPublic()) {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
             User user = getUserByUsername(username);
@@ -180,7 +179,6 @@ public class PlaylistController {
             throw new RuntimeException("Not authorized to modify this playlist");
         }
 
-        // Pobierz utwory w nowej kolejności
         List<Track> reorderedTracks = trackIds.stream()
                 .map(trackId -> trackRepository.findById(trackId)
                         .orElseThrow(() -> new RuntimeException("Track not found: " + trackId)))

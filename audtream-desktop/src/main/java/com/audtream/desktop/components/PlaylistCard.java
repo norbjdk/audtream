@@ -8,11 +8,22 @@ import javafx.scene.layout.GridPane;
 import java.util.Objects;
 
 public class PlaylistCard extends GridPane {
+    private final Long id;
+
     public PlaylistCard(Long id, String name, String author, String coverUrl) {
+        this.id = id;
+
         getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/audtream/desktop/styles/components/playlists.css")).toExternalForm());
         getStyleClass().add("playlist-card");
 
-        ImageView imageView = new ImageView(new Image(coverUrl, true));
+        ImageView imageView = new ImageView();
+        if (coverUrl != null && !coverUrl.isEmpty()) {
+            try {
+                imageView.setImage(new Image(coverUrl, true));
+            } catch (Exception e) {
+                imageView.setImage(null);
+            }
+        }
 
         Label nameLabel = new Label(name);
         nameLabel.getStyleClass().add("playlist-name-label");
@@ -22,5 +33,9 @@ public class PlaylistCard extends GridPane {
         add(imageView, 0, 0, 1, 2);
         add(nameLabel, 1, 0);
         add(authorLabel, 1, 1);
+    }
+
+    public Long getPlaylistId() {
+        return id;
     }
 }

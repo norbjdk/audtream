@@ -1,7 +1,7 @@
 package com.audtream.desktop.service;
 
 import com.audtream.desktop.config.ApiConfig;
-import com.audtream.desktop.model.dto.User;
+import com.audtream.desktop.model.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CurrentUserService {

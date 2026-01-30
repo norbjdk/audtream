@@ -47,7 +47,6 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> getArtistStats() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        // Poprawione: używamy userRepository, a nie UserRepository (klasa)
         User user = userRepository.findByUsername(username)
                 .or(() -> userRepository.findByEmail(username))
                 .orElseThrow(() -> new RuntimeException("User not found"));

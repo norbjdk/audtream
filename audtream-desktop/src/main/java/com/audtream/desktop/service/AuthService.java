@@ -2,7 +2,7 @@ package com.audtream.desktop.service;
 
 import com.audtream.desktop.config.ApiConfig;
 import com.audtream.desktop.model.dto.AuthResponse;
-import com.audtream.desktop.model.dto.User;
+import com.audtream.desktop.model.entity.User;
 import okhttp3.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

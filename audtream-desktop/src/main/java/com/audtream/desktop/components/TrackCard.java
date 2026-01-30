@@ -25,12 +25,27 @@ public class TrackCard extends VBox {
         Label authorLabel = new Label(author);
         authorLabel.getStyleClass().add("track-author-label");
 
-        Image trackCover = new Image(Objects.requireNonNull(getClass().getResource("/com/audtream/desktop/song-sample/" + coverUrl)).toExternalForm());
-        ImageView imageView = new ImageView(trackCover);
+        ImageView imageView = new ImageView();
         imageView.setFitWidth(150);
         imageView.setPreserveRatio(true);
         imageView.setSmooth(true);
 
+        if (coverUrl != null && !coverUrl.isEmpty()) {
+            try {
+                if (coverUrl.startsWith("http")) {
+                    imageView.setImage(new Image(coverUrl, true));
+                } else {
+                    imageView.setImage(new Image(Objects.requireNonNull(getClass().getResource("/com/audtream/desktop/song-sample/" + coverUrl)).toExternalForm()));
+                }
+            } catch (Exception e) {
+                imageView.setImage(null);
+            }
+        }
+
         getChildren().addAll(imageView, titleLabel, authorLabel);
+    }
+
+    public Long getTrackId() {
+        return id;
     }
 }
